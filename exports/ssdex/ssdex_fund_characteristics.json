@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "package_name": "SSDEX Fund Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch",
+  "detail_level": "starter_profile",
+  "scope_definition": "54_sovereign_african_states_build",
+  "platform_note": "Prepared as a generic structured upload package for a 54-country Africa buildout because a public WASI/ASI Intelligence import schema could not be verified.",
+  "fund_identity": {
+    "fund_name": "SSDEX Fund",
+    "short_name": "SSDEX",
+    "full_name": "South Sudan Raw Export Index Fund",
+    "benchmark_name": "South Sudan Raw Export Index",
+    "benchmark_ticker": "SSDEX",
+    "vehicle_stage": "concept_and_platform_profile",
+    "fund_status": "not_yet_constituted",
+    "target_domicile": "South Sudan",
+    "iso3": "SSD",
+    "base_currency": "SSP",
+    "regional_comparison_currency": "",
+    "continental_comparison_currency": "USD",
+    "asset_class": "commodity_export_economy_reference_fund",
+    "strategy_type": "rules_based_index_tracking",
+    "reference_region": "South Sudan"
+  },
+  "fund_family": {
+    "family_code": "AFEX",
+    "family_name": "Africa Export Index Family",
+    "subfamily_code": "EAEX",
+    "subfamily_name": "East Africa Export Index Family",
+    "family_role": "energy_member",
+    "shared_family_rule": "Each country fund keeps its own export methodology while staying aligned to a continent-wide naming, governance, and packaging structure.",
+    "comparison_currency_note": "Publish the country in SSP and publish a continent-wide comparison series in USD."
+  },
+  "investment_objective": {
+    "primary_objective": "Track the evolution of the main raw materials exported from South Sudan through a transparent, rules-based benchmark.",
+    "family_objective": "Enable continent-wide comparison inside AFEX while preserving country-specific export logic."
+  },
+  "benchmark_methodology": {
+    "index_name": "South Sudan Raw Export Index",
+    "index_code": "SSDEX",
+    "methodology_model": "landlocked_corridor_model",
+    "weighting_method": "trailing_20_year_average_export_tonnage_weighting",
+    "transport_basis_note": "Use outbound export tonnage across road, rail, air, border-post, and transit-corridor flows rather than seaborne loading.",
+    "reconstitution_frequency": "annual",
+    "rebalancing_frequency": "quarterly",
+    "pricing_method": "reference_commodity_prices_in_local_currency_with_optional_regional_and_usd_comparison_series",
+    "methodology_status": "starter_profile_needs_country_trade_validation"
+  },
+  "candidate_constituent_universe": [
+    {
+      "name": "Crude Oil",
+      "status": "candidate"
+    },
+    {
+      "name": "Gum Arabic",
+      "status": "candidate"
+    },
+    {
+      "name": "Livestock",
+      "status": "candidate"
+    },
+    {
+      "name": "Sesame Seeds",
+      "status": "candidate"
+    }
+  ],
+  "country_context": {
+    "subfamily_code": "EAEX",
+    "regional_links": [
+      "Sudan",
+      "Uganda",
+      "Kenya",
+      "Ethiopia"
+    ],
+    "special_note": "South Sudan should be treated as a landlocked oil exporter with elevated fragility risk."
+  },
+  "research_and_validation": {
+    "validation_status": "under_research",
+    "preferred_existing_package": "",
+    "caution": "This all-54 library is a scalable continental starter set. Official country trade statistics, benchmark rules, and legal review should be completed before institutional launch."
+  },
+  "regulatory_positioning": {
+    "generic_note": "Country-specific legal and securities review is required before launch. Do not assume one regulatory regime applies across all 54 sovereign states.",
+    "microfinance_separation_note": "The fund vehicle should remain separate from any microfinance balance sheet."
+  }
+}

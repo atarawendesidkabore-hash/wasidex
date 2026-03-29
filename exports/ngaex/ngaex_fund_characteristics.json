@@ -1,0 +1,293 @@
+{
+  "schema_version": "1.0",
+  "package_name": "NGAEX Fund Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch",
+  "detail_level": "detailed_prototype_ready",
+  "scope_definition": "54_sovereign_african_states_build",
+  "platform_note": "Detailed prototype profile for NGAEX — Nigeria Raw Export Index Fund. Prepared for WASI Intelligence platform upload.",
+  "fund_identity": {
+    "fund_name": "NGAEX Fund",
+    "short_name": "NGAEX",
+    "full_name": "Nigeria Raw Export Index Fund",
+    "benchmark_name": "Nigeria Raw Export Index",
+    "benchmark_ticker": "NGAEX",
+    "vehicle_stage": "concept_and_platform_profile",
+    "fund_status": "not_yet_constituted",
+    "target_domicile": "Nigeria",
+    "iso3": "NGA",
+    "base_currency": "NGN",
+    "nav_currency": "NGN",
+    "regional_comparison_currency": "USD",
+    "continental_comparison_currency": "USD",
+    "base_index_level": 100.0,
+    "base_index_date": "2023-01-01",
+    "asset_class": "commodity_export_economy_reference_fund",
+    "strategy_type": "rules_based_index_tracking",
+    "reference_region": "Nigeria"
+  },
+  "fund_family": {
+    "family_code": "AFEX",
+    "family_name": "Africa Export Index Family",
+    "subfamily_code": "WAEX",
+    "subfamily_name": "West Africa Export Index Family",
+    "family_role": "energy_anchor_member",
+    "shared_family_rule": "Each country fund keeps its own export methodology while staying aligned to a continent-wide naming, governance, and packaging structure.",
+    "comparison_currency_note": "Publish the country in NGN and publish a continent-wide comparison series in USD.",
+    "sibling_funds": [
+      "CIREX",
+      "BUREX",
+      "GHAEX"
+    ]
+  },
+  "investment_objective": {
+    "primary_objective": "Track the evolution of the main raw materials exported from Nigeria through a transparent, rules-based benchmark measured in NGN.",
+    "secondary_objective": "Provide a future foundation for a regulated investment product linked to Nigeria's export economy and the broader AFEX continental architecture.",
+    "economic_thesis": [
+      "Nigeria is Africa's largest oil producer and the continent's biggest economy, with an export base heavily concentrated in hydrocarbons.",
+      "Crude oil and natural gas account for over 90% of export revenues, creating a benchmark dominated by energy.",
+      "Agricultural exports (cocoa, sesame, rubber) represent a secondary but structurally important layer.",
+      "NGN denomination makes the benchmark locally relevant for Nigerian institutional investors and pension funds.",
+      "The Lagos-Apapa and Bonny Island export corridors anchor the physical flow of Nigerian commodity exports."
+    ]
+  },
+  "benchmark_methodology": {
+    "index_name": "Nigeria Raw Export Index",
+    "index_code": "NGAEX",
+    "methodology_model": "coastal_export_model",
+    "base_currency": "NGN",
+    "calculation_currency": "NGN",
+    "weighting_method": "trailing_20_year_average_export_tonnage_weighting",
+    "weight_definition": "Each constituent weight is the commodity's share of trailing twenty-year average export tonnage.",
+    "transport_basis_note": "Use outbound export tonnage from Bonny, Forcados, Escravos, Brass terminals and Lagos/Apapa port complex.",
+    "reconstitution_frequency": "annual",
+    "rebalancing_frequency": "quarterly",
+    "pricing_method": "reference_commodity_prices_converted_or_expressed_in_NGN",
+    "calculation_logic": "Index level changes according to weighted commodity return movements in NGN.",
+    "coverage_rule": "Include major raw materials exported from Nigeria, even where no liquid futures market exists.",
+    "methodology_caution": "Extreme energy concentration means the index is heavily correlated with global oil prices. Pure tonnage weighting by volume amplifies LNG and crude relative to high-value agricultural exports.",
+    "methodology_status": "detailed_prototype_ready"
+  },
+  "fund_structure": {
+    "proposed_vehicle_type": "separate_regulated_investment_vehicle",
+    "relationship_to_microfinance": "must_be_legally_and_operationally_separate_from_any_microfinance_entity",
+    "replication_model": "reference_index_first_investable_replication_later",
+    "current_product_form": "reference_fund_profile",
+    "future_product_forms": [
+      "collective_investment_vehicle",
+      "structured_note",
+      "tokenized_fund_shares",
+      "NGX_listed_ETF"
+    ],
+    "share_classes_planned": [
+      {
+        "class_name": "NGAEX NGN Core",
+        "currency": "NGN",
+        "hedging": "none"
+      },
+      {
+        "class_name": "NGAEX USD",
+        "currency": "USD",
+        "hedging": "optional"
+      }
+    ],
+    "subscription_redemption_frequency": "TBD",
+    "valuation_frequency": "daily_or_periodic_TBD",
+    "income_treatment": "TBD_accumulating_or_distributing",
+    "liquidity_profile": "TBD_dependent_on_legal_vehicle_and_replication_method"
+  },
+  "constituent_universe": [
+    {
+      "code": "crude_oil",
+      "name": "Crude Oil",
+      "category": "Energy",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 58.20,
+      "export_note": "Nigeria produces Bonny Light, Forcados, Qua Iboe, Escravos, and Brass River crudes. OPEC member."
+    },
+    {
+      "code": "natural_gas",
+      "name": "Natural Gas (LNG)",
+      "category": "Energy",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 28.50,
+      "export_note": "Nigeria LNG (Bonny Island) is one of the world's largest LNG plants. Six-train facility."
+    },
+    {
+      "code": "cocoa_beans",
+      "name": "Cocoa Beans",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 5.40,
+      "export_note": "Nigeria is the world's fourth-largest cocoa producer. Southwest Nigeria is the main growing region."
+    },
+    {
+      "code": "sesame_seeds",
+      "name": "Sesame Seeds",
+      "category": "Agriculture",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 4.10,
+      "export_note": "Nigeria is a top global sesame exporter. Mainly from Benue, Nasarawa, and Jigawa states."
+    },
+    {
+      "code": "natural_rubber",
+      "name": "Natural Rubber",
+      "category": "Industrial Agriculture",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 2.30,
+      "export_note": "Produced in Edo, Delta, and Ondo states. Nigeria was historically a major rubber producer."
+    },
+    {
+      "code": "urea",
+      "name": "Urea (Fertilizer)",
+      "category": "Petrochemicals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 1.50,
+      "export_note": "Dangote Fertiliser plant (Lagos Free Trade Zone) — one of the largest urea plants in Africa."
+    }
+  ],
+  "illustrative_weight_note": {
+    "status": "prototype_only",
+    "explanation": "Illustrative weights come from available trade data estimates and should be replaced with official twenty-year shipment data from NBS and Nigeria Customs before institutional launch."
+  },
+  "pricing_and_data": {
+    "shipment_data_needed": [
+      "NNPC_crude_oil_export_volumes",
+      "Nigeria_LNG_export_data",
+      "Nigeria_Customs_Service_official_trade_records",
+      "NBS_National_Bureau_of_Statistics_trade_data",
+      "port_loading_data_from_Apapa_Onne_Bonny"
+    ],
+    "price_data_needed": [
+      "Bonny_Light_crude_differential_to_Brent",
+      "Henry_Hub_or_JKM_LNG_reference_prices",
+      "ICE_cocoa_futures",
+      "FAOSTAT_sesame_reference_prices",
+      "SICOM_rubber_futures",
+      "urea_FOB_reference_prices"
+    ],
+    "fx_requirement": "NGN_reference_pricing_via_CBN_exchange_rate_or_NAFEM_window",
+    "data_governance": "index_committee_and_documented_source_hierarchy_required"
+  },
+  "country_context": {
+    "subfamily_code": "WAEX",
+    "regional_links": [
+      "Benin",
+      "Niger",
+      "Cameroon",
+      "Chad"
+    ],
+    "corridor_relevance": "Nigeria's port system (Lagos/Apapa, Onne, Calabar) serves as a major corridor for the entire West African subregion. The Lagos-Cotonou-Lome coastal artery and the northern routes to Niger and Chad are critical trade links.",
+    "special_note": "Detailed prototype. Energy-dominant benchmark representing Africa's largest economy. Extreme oil/gas concentration is a feature, not a bug — it reflects the structural reality of Nigeria's export economy."
+  },
+  "governance": {
+    "index_committee_required": true,
+    "committee_roles": [
+      "constituent_eligibility_review",
+      "pricing_source_review",
+      "methodology_change_control",
+      "exception_management",
+      "OPEC_quota_impact_review"
+    ],
+    "methodology_change_policy": "documented_and_version_controlled",
+    "independent_oversight_needed": true
+  },
+  "target_users": {
+    "primary_target_investors": [
+      "Nigerian_pension_fund_administrators_PFAs",
+      "Nigeria_high_net_worth_investors",
+      "NGX_institutional_investors",
+      "Africa_focused_commodity_funds",
+      "energy_sector_allocators"
+    ],
+    "secondary_users": [
+      "research_platforms",
+      "trade_finance_institutions",
+      "oil_and_gas_hedging_desks",
+      "future_tokenized_investment_interfaces"
+    ]
+  },
+  "risk_factors": [
+    "extreme_energy_concentration_over_85pct",
+    "global_oil_price_volatility_and_OPEC_policy",
+    "NGN_exchange_rate_volatility_and_FX_liquidity",
+    "shipment_volume_distortion_under_pure_tonnage_weighting",
+    "data_quality_and_NNPC_reporting_transparency",
+    "regulatory_and_product_approval_risk_SEC_Nigeria",
+    "illiquidity_for_non_futures_constituents",
+    "oil_theft_and_pipeline_vandalism_impact_on_volumes",
+    "technology_layer_execution_risk",
+    "PIA_Petroleum_Industry_Act_transition_risk"
+  ],
+  "technology_layer": {
+    "tokenization_ready": true,
+    "tokenization_current_status": "design_only",
+    "cbdc_ready": true,
+    "cbdc_current_status": "eNaira_launched_acknowledged_not_yet_integrated",
+    "x402_ready": true,
+    "x402_role": "programmable_access_and_payment_layer_not_the_legal_fund_ledger",
+    "recommended_stack": [
+      "regulated_fund_vehicle_under_SEC_Nigeria",
+      "onchain_share_registry_when_permitted",
+      "NGN_accounting_layer",
+      "eNaira_or_approved_digital_settlement_layer",
+      "x402_API_access_layer",
+      "NGX_listing_pathway_for_ETF"
+    ]
+  },
+  "microfinance_interface": {
+    "allowed_relationship": "advisory_and_contextual_link_only",
+    "disallowed_assumption": "do_not_treat_any_microfinance_entity_as_the_fund_vehicle",
+    "operational_use_case": [
+      "export_context_for_credit_decisions",
+      "oil_and_gas_sector_monitoring",
+      "borrower_sector_monitoring",
+      "client_education"
+    ]
+  },
+  "regulatory_positioning": {
+    "securities_regulator": "Securities and Exchange Commission Nigeria (SEC Nigeria)",
+    "capital_markets_framework": "Investments and Securities Act 2007",
+    "stock_exchange": "Nigerian Exchange Group (NGX)",
+    "collective_investment_note": "A future collective investment product or ETF would require SEC Nigeria approval and potentially NGX listing.",
+    "product_separation_note": "NGAEX Fund should be constituted and distributed separately from any microfinance or banking balance sheet.",
+    "tax_considerations": "Capital gains tax on securities, companies income tax, and VAT considerations under FIRS rules.",
+    "pia_note": "The Petroleum Industry Act 2021 reformed the oil and gas regulatory framework. NGAEX methodology must account for any impact on export volume reporting."
+  },
+  "operating_stage": {
+    "current_live_components": [
+      "detailed_fund_profile_package",
+      "WASI_platform_listing",
+      "CLI_instrument_access"
+    ],
+    "not_yet_live_components": [
+      "regulated_fund_vehicle",
+      "investor_portal",
+      "live_data_pipeline",
+      "NGX_ETF_listing",
+      "tokenized_share_issuance"
+    ]
+  },
+  "required_next_documents": [
+    "full_benchmark_methodology_document",
+    "fund_term_sheet",
+    "SEC_Nigeria_regulatory_memo",
+    "NNPC_data_access_agreement",
+    "data_source_policy",
+    "index_governance_charter",
+    "risk_disclosure_document",
+    "investor_factsheet"
+  ],
+  "reference_urls": [
+    "https://sec.gov.ng/",
+    "https://ngxgroup.com/",
+    "https://www.nigerianstat.gov.ng/",
+    "https://www.nnpcgroup.com/"
+  ]
+}

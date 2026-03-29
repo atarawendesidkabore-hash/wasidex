@@ -1,0 +1,282 @@
+{
+  "schema_version": "1.0",
+  "package_name": "GHAEX Fund Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch",
+  "detail_level": "detailed_prototype_ready",
+  "scope_definition": "54_sovereign_african_states_build",
+  "platform_note": "Detailed prototype profile for GHAEX — Ghana Raw Export Index Fund. Prepared for WASI Intelligence platform upload.",
+  "fund_identity": {
+    "fund_name": "GHAEX Fund",
+    "short_name": "GHAEX",
+    "full_name": "Ghana Raw Export Index Fund",
+    "benchmark_name": "Ghana Raw Export Index",
+    "benchmark_ticker": "GHAEX",
+    "vehicle_stage": "concept_and_platform_profile",
+    "fund_status": "not_yet_constituted",
+    "target_domicile": "Ghana",
+    "iso3": "GHA",
+    "base_currency": "GHS",
+    "nav_currency": "GHS",
+    "regional_comparison_currency": "USD",
+    "continental_comparison_currency": "USD",
+    "base_index_level": 100.0,
+    "base_index_date": "2023-01-01",
+    "asset_class": "commodity_export_economy_reference_fund",
+    "strategy_type": "rules_based_index_tracking",
+    "reference_region": "Ghana"
+  },
+  "fund_family": {
+    "family_code": "AFEX",
+    "family_name": "Africa Export Index Family",
+    "subfamily_code": "WAEX",
+    "subfamily_name": "West Africa Export Index Family",
+    "family_role": "coastal_anchor_member",
+    "shared_family_rule": "Each country fund keeps its own export methodology while staying aligned to a continent-wide naming, governance, and packaging structure.",
+    "comparison_currency_note": "Publish the country in GHS and publish a continent-wide comparison series in USD.",
+    "sibling_funds": [
+      "CIREX",
+      "BUREX",
+      "NGAEX"
+    ]
+  },
+  "investment_objective": {
+    "primary_objective": "Track the evolution of the main raw materials exported from Ghana through a transparent, rules-based benchmark measured in GHS.",
+    "secondary_objective": "Provide a future foundation for a regulated investment product linked to Ghana's export economy and the broader AFEX continental architecture.",
+    "economic_thesis": [
+      "Ghana is the world's second-largest cocoa producer and a major gold exporter, creating a diversified commodity export base.",
+      "The Takoradi-Tema port corridor anchors a significant volume of mineral and agricultural export flows.",
+      "A trailing 20-year tonnage-weighted benchmark can represent the physical structure of Ghana's export economy.",
+      "GHS denomination makes the benchmark locally relevant for Ghanaian institutional investors.",
+      "Ghana serves as a major corridor gateway for landlocked Burkina Faso and northern trade routes."
+    ]
+  },
+  "benchmark_methodology": {
+    "index_name": "Ghana Raw Export Index",
+    "index_code": "GHAEX",
+    "methodology_model": "coastal_export_model",
+    "base_currency": "GHS",
+    "calculation_currency": "GHS",
+    "weighting_method": "trailing_20_year_average_export_tonnage_weighting",
+    "weight_definition": "Each constituent weight is the commodity's share of trailing twenty-year average export tonnage.",
+    "transport_basis_note": "Use outbound export tonnage from Takoradi, Tema, and other Ghanaian ports plus official trade statistics.",
+    "reconstitution_frequency": "annual",
+    "rebalancing_frequency": "quarterly",
+    "pricing_method": "reference_commodity_prices_converted_or_expressed_in_GHS",
+    "calculation_logic": "Index level changes according to weighted commodity return movements in GHS.",
+    "coverage_rule": "Include major raw materials exported from Ghana, even where no liquid futures market exists.",
+    "methodology_caution": "Pure tonnage weighting materially reduces the weight of high-value low-mass exports such as gold.",
+    "methodology_status": "detailed_prototype_ready"
+  },
+  "fund_structure": {
+    "proposed_vehicle_type": "separate_regulated_investment_vehicle",
+    "relationship_to_microfinance": "must_be_legally_and_operationally_separate_from_any_microfinance_entity",
+    "replication_model": "reference_index_first_investable_replication_later",
+    "current_product_form": "reference_fund_profile",
+    "future_product_forms": [
+      "collective_investment_vehicle",
+      "structured_note",
+      "tokenized_fund_shares"
+    ],
+    "share_classes_planned": [
+      {
+        "class_name": "GHAEX GHS Core",
+        "currency": "GHS",
+        "hedging": "none"
+      },
+      {
+        "class_name": "GHAEX USD",
+        "currency": "USD",
+        "hedging": "optional"
+      }
+    ],
+    "subscription_redemption_frequency": "TBD",
+    "valuation_frequency": "daily_or_periodic_TBD",
+    "income_treatment": "TBD_accumulating_or_distributing",
+    "liquidity_profile": "TBD_dependent_on_legal_vehicle_and_replication_method"
+  },
+  "constituent_universe": [
+    {
+      "code": "cocoa_beans",
+      "name": "Cocoa Beans",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 28.50,
+      "export_note": "Ghana is the world's second-largest cocoa producer. COCOBOD regulates the sector."
+    },
+    {
+      "code": "gold",
+      "name": "Gold",
+      "category": "Precious Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 0.02,
+      "export_note": "Gold is Ghana's largest export by value but minimal by tonnage. Major mines: Tarkwa, Obuasi, Ahafo."
+    },
+    {
+      "code": "crude_oil",
+      "name": "Crude Oil",
+      "category": "Energy",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 18.40,
+      "export_note": "Jubilee and TEN fields offshore. Production began 2010. Exported via FPSO to global markets."
+    },
+    {
+      "code": "manganese",
+      "name": "Manganese Ore",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 22.30,
+      "export_note": "Ghana Manganese Company (Nsuta mine). Major global supplier. Shipped from Takoradi."
+    },
+    {
+      "code": "bauxite",
+      "name": "Bauxite",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 19.80,
+      "export_note": "Awaso mine (Ghana Bauxite Company). Ghana has large untapped reserves including the Nyinahin deposit."
+    },
+    {
+      "code": "timber",
+      "name": "Timber and Wood Products",
+      "category": "Forestry",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 10.98,
+      "export_note": "Tropical hardwoods from Western and Ashanti regions. Increasingly regulated for sustainability."
+    }
+  ],
+  "illustrative_weight_note": {
+    "status": "prototype_only",
+    "explanation": "Illustrative weights come from available trade data estimates and should be replaced with official twenty-year shipment data from Ghana Statistical Service and Customs before institutional launch."
+  },
+  "pricing_and_data": {
+    "shipment_data_needed": [
+      "port_loading_data_from_Takoradi_and_Tema",
+      "Ghana_Revenue_Authority_customs_export_records",
+      "Ghana_Statistical_Service_official_trade_data",
+      "Minerals_Commission_production_reports"
+    ],
+    "price_data_needed": [
+      "ICE_cocoa_futures_or_COCOBOD_reference_prices",
+      "LBMA_gold_fixing",
+      "Brent_crude_or_Ghana_blend_pricing",
+      "CRU_manganese_ore_reference_prices",
+      "aluminum_bauxite_proxy_prices",
+      "ITTO_tropical_timber_reference_prices"
+    ],
+    "fx_requirement": "GHS_reference_pricing_or_BOG_exchange_rate_conversion",
+    "data_governance": "index_committee_and_documented_source_hierarchy_required"
+  },
+  "country_context": {
+    "subfamily_code": "WAEX",
+    "regional_links": [
+      "Cote d'Ivoire",
+      "Togo",
+      "Burkina Faso"
+    ],
+    "corridor_relevance": "Ghana is the primary corridor outlet for landlocked Burkina Faso. The Tema-Ouagadougou highway and rail links are critical trade arteries.",
+    "special_note": "Detailed prototype. Priority member due to scale, commodity depth, dual cocoa-mining profile, and corridor relevance to Sahel countries."
+  },
+  "governance": {
+    "index_committee_required": true,
+    "committee_roles": [
+      "constituent_eligibility_review",
+      "pricing_source_review",
+      "methodology_change_control",
+      "exception_management"
+    ],
+    "methodology_change_policy": "documented_and_version_controlled",
+    "independent_oversight_needed": true
+  },
+  "target_users": {
+    "primary_target_investors": [
+      "Ghanaian_pension_funds_and_SSNIT",
+      "Ghana_high_net_worth_investors",
+      "Africa_focused_institutions",
+      "commodity_and_export_theme_allocators"
+    ],
+    "secondary_users": [
+      "research_platforms",
+      "advisory_platforms",
+      "trade_finance_institutions",
+      "future_tokenized_investment_interfaces"
+    ]
+  },
+  "risk_factors": [
+    "commodity_price_volatility_especially_cocoa_and_gold",
+    "GHS_exchange_rate_volatility",
+    "shipment_volume_distortion_under_pure_tonnage_weighting",
+    "data_quality_and_source_consistency_risk",
+    "regulatory_and_product_approval_risk_SEC_Ghana",
+    "illiquidity_for_non_futures_constituents",
+    "operational_risk_in_index_governance",
+    "country_and_export_concentration_risk",
+    "technology_layer_execution_risk",
+    "oil_production_depletion_risk"
+  ],
+  "technology_layer": {
+    "tokenization_ready": true,
+    "tokenization_current_status": "design_only",
+    "cbdc_ready": true,
+    "cbdc_current_status": "BOG_eCedi_pilot_acknowledged_not_yet_integrated",
+    "x402_ready": true,
+    "x402_role": "programmable_access_and_payment_layer_not_the_legal_fund_ledger",
+    "recommended_stack": [
+      "regulated_fund_vehicle_under_SEC_Ghana",
+      "onchain_share_registry_when_permitted",
+      "GHS_accounting_layer",
+      "future_eCedi_or_approved_digital_settlement_layer",
+      "x402_API_access_layer"
+    ]
+  },
+  "microfinance_interface": {
+    "allowed_relationship": "advisory_and_contextual_link_only",
+    "disallowed_assumption": "do_not_treat_any_microfinance_entity_as_the_fund_vehicle",
+    "operational_use_case": [
+      "export_context_for_credit_decisions",
+      "borrower_sector_monitoring",
+      "client_education"
+    ]
+  },
+  "regulatory_positioning": {
+    "securities_regulator": "Securities and Exchange Commission Ghana (SEC Ghana)",
+    "capital_markets_framework": "Securities Industry Act 2016 (Act 929)",
+    "collective_investment_note": "A future collective investment product would require SEC Ghana approval under the Unit Trusts and Mutual Funds framework.",
+    "product_separation_note": "GHAEX Fund should be constituted and distributed separately from any microfinance or banking balance sheet.",
+    "tax_considerations": "Capital gains tax regime and withholding tax on investment income apply under Ghana Revenue Authority rules."
+  },
+  "operating_stage": {
+    "current_live_components": [
+      "detailed_fund_profile_package",
+      "WASI_platform_listing",
+      "CLI_instrument_access"
+    ],
+    "not_yet_live_components": [
+      "regulated_fund_vehicle",
+      "investor_portal",
+      "live_data_pipeline",
+      "tokenized_share_issuance"
+    ]
+  },
+  "required_next_documents": [
+    "full_benchmark_methodology_document",
+    "fund_term_sheet",
+    "SEC_Ghana_regulatory_memo",
+    "data_source_policy",
+    "index_governance_charter",
+    "risk_disclosure_document",
+    "investor_factsheet"
+  ],
+  "reference_urls": [
+    "https://www.sec.gov.gh/",
+    "https://statsghana.gov.gh/",
+    "https://www.bog.gov.gh/",
+    "https://www.gpha.gov.gh/"
+  ]
+}

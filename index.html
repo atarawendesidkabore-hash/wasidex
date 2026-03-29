@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WASI DEX — Africa Intelligence Platform</title>
+  <meta
+    name="description"
+    content="WASI DEX is a shareable Africa intelligence website covering 54 AFEX sovereign instruments, export models, and XOF reference FX views."
+  >
+  <meta name="theme-color" content="#07131f">
+  <meta property="og:title" content="WASI DEX — Africa Intelligence Platform">
+  <meta
+    property="og:description"
+    content="Explore 54 African export instruments, compare regions, and review XOF reference FX logic in a GitHub-shareable WASI DEX website."
+  >
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./preview-card.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <nav class="topbar">
+    <div class="topbar-left">
+      <div class="logo">WASI<span class="logo-accent">DEX</span></div>
+      <span class="topbar-label">Africa Intelligence Platform</span>
+    </div>
+    <div class="topbar-right">
+      <span class="live-dot"></span>
+      <span class="topbar-meta">AFEX 54 Countries</span>
+      <span class="topbar-meta">USD Comparison</span>
+      <span class="topbar-meta" id="clock"></span>
+    </div>
+  </nav>
+
+  <div class="platform">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Search</div>
+        <input class="search-input" id="search-input" type="text" placeholder="Country, code, commodity...">
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Subfamilies</div>
+        <div id="subfamily-nav"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Methodology</div>
+        <div id="model-nav"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Profile Level</div>
+        <div id="profile-nav"></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-heading">Resources</div>
+        <a class="nav-link" href="./exports/afex_all54_manifest.json" target="_blank">AFEX Manifest (JSON)</a>
+        <a class="nav-link" href="./exports/afex_all54_manifest.md" target="_blank">AFEX Manifest (Markdown)</a>
+        <a class="nav-link" href="./README.md" target="_blank">GitHub Publish Guide</a>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <section class="terminal-bar">
+        <div class="terminal-row">
+          <span class="terminal-label">AFEX</span>
+          <span class="terminal-separator">|</span>
+          <span id="terminal-count">54 instruments loaded</span>
+          <span class="terminal-separator">|</span>
+          <span id="terminal-filter">No filter</span>
+          <span class="terminal-separator">|</span>
+          <span id="terminal-commodities">0 commodities tracked</span>
+        </div>
+      </section>
+
+      <section class="kpi-strip" id="kpi-strip"></section>
+
+      <section class="view-controls">
+        <div class="view-tabs">
+          <button class="view-tab active" data-view="grid">Grid</button>
+          <button class="view-tab" data-view="table">Table</button>
+          <button class="view-tab" data-view="compare">Compare</button>
+          <button class="view-tab" data-view="fx">FX — Change XOF</button>
+        </div>
+        <div class="sort-controls">
+          <select class="sort-select" id="sort-select">
+            <option value="code">Sort: Code</option>
+            <option value="country">Sort: Country</option>
+            <option value="subfamily">Sort: Region</option>
+            <option value="model">Sort: Model</option>
+            <option value="commodities">Sort: Commodity count</option>
+          </select>
+        </div>
+      </section>
+
+      <section class="content-area" id="content-area"></section>
+
+      <section class="detail-drawer hidden" id="detail-drawer">
+        <div class="drawer-header">
+          <h2 id="drawer-title"></h2>
+          <button class="drawer-close" id="drawer-close">&times;</button>
+        </div>
+        <div class="drawer-body" id="drawer-body"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>

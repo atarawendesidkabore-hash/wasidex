@@ -1,0 +1,86 @@
+{
+  "schema_version": "1.0",
+  "package_name": "GABEX Fund Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch",
+  "detail_level": "starter_profile",
+  "scope_definition": "54_sovereign_african_states_build",
+  "platform_note": "Prepared as a generic structured upload package for a 54-country Africa buildout because a public WASI/ASI Intelligence import schema could not be verified.",
+  "fund_identity": {
+    "fund_name": "GABEX Fund",
+    "short_name": "GABEX",
+    "full_name": "Gabon Raw Export Index Fund",
+    "benchmark_name": "Gabon Raw Export Index",
+    "benchmark_ticker": "GABEX",
+    "vehicle_stage": "concept_and_platform_profile",
+    "fund_status": "not_yet_constituted",
+    "target_domicile": "Gabon",
+    "iso3": "GAB",
+    "base_currency": "XAF",
+    "regional_comparison_currency": "XAF",
+    "continental_comparison_currency": "USD",
+    "asset_class": "commodity_export_economy_reference_fund",
+    "strategy_type": "rules_based_index_tracking",
+    "reference_region": "Gabon"
+  },
+  "fund_family": {
+    "family_code": "AFEX",
+    "family_name": "Africa Export Index Family",
+    "subfamily_code": "CAEX",
+    "subfamily_name": "Central Africa Export Index Family",
+    "family_role": "energy_and_metals_member",
+    "shared_family_rule": "Each country fund keeps its own export methodology while staying aligned to a continent-wide naming, governance, and packaging structure.",
+    "comparison_currency_note": "Publish the country in XAF, allow regional comparison in XAF, and publish a continent-wide comparison series in USD."
+  },
+  "investment_objective": {
+    "primary_objective": "Track the evolution of the main raw materials exported from Gabon through a transparent, rules-based benchmark.",
+    "family_objective": "Enable continent-wide comparison inside AFEX while preserving country-specific export logic."
+  },
+  "benchmark_methodology": {
+    "index_name": "Gabon Raw Export Index",
+    "index_code": "GABEX",
+    "methodology_model": "coastal_export_model",
+    "weighting_method": "trailing_20_year_average_export_tonnage_weighting",
+    "transport_basis_note": "Use outbound export tonnage across port-led export flows and official trade statistics.",
+    "reconstitution_frequency": "annual",
+    "rebalancing_frequency": "quarterly",
+    "pricing_method": "reference_commodity_prices_in_local_currency_with_optional_regional_and_usd_comparison_series",
+    "methodology_status": "starter_profile_needs_country_trade_validation"
+  },
+  "candidate_constituent_universe": [
+    {
+      "name": "Crude Oil",
+      "status": "candidate"
+    },
+    {
+      "name": "Manganese",
+      "status": "candidate"
+    },
+    {
+      "name": "Timber",
+      "status": "candidate"
+    },
+    {
+      "name": "Gold",
+      "status": "candidate"
+    }
+  ],
+  "country_context": {
+    "subfamily_code": "CAEX",
+    "regional_links": [
+      "Cameroon",
+      "Republic of the Congo",
+      "Equatorial Guinea"
+    ],
+    "special_note": "Gabon should combine oil, manganese, and timber exposure."
+  },
+  "research_and_validation": {
+    "validation_status": "under_research",
+    "preferred_existing_package": "",
+    "caution": "This all-54 library is a scalable continental starter set. Official country trade statistics, benchmark rules, and legal review should be completed before institutional launch."
+  },
+  "regulatory_positioning": {
+    "generic_note": "Country-specific legal and securities review is required before launch. Do not assume one regulatory regime applies across all 54 sovereign states.",
+    "microfinance_separation_note": "The fund vehicle should remain separate from any microfinance balance sheet."
+  }
+}
