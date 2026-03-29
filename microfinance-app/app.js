@@ -2,11 +2,13 @@ const STORAGE_KEY = "cirex_microfinance_state_v3";
 const IS_STATIC_PUBLIC_DEMO = window.location.hostname.endsWith("github.io");
 const API_BASE = window.location.protocol === "file:" ? "http://localhost:3100" : IS_STATIC_PUBLIC_DEMO ? null : "";
 const SOURCE_STATUS_POLL_MS = 5 * 60 * 1000;
+const INTERNAL_INTEREST_RATE_CEILING = 6;
 const STATIC_KNOWLEDGE_PATH = "./data/africa-microfinance-index.json";
 const AI_EXAMPLES = [
   "La réglementation BCEAO sur la microfinance s'applique-t-elle au Sénégal ?",
   "Quels textes officiels sur la microfinance sont indexés pour le Burkina Faso ?",
   "La réglementation BCEAO sur la microfinance s'applique-t-elle au Nigeria ?",
+  "Quel est le plafond interne de taux dans CIREX ?",
   "Quel dossier de crédit demande un suivi prioritaire aujourd'hui ?",
   "Que dois-je vérifier avant d'accorder un nouveau crédit en Côte d'Ivoire ?"
 ];
@@ -58,7 +60,7 @@ const RISK_LABELS = {
 const viewMeta = {
   overview: "Suivez les signaux du portefeuille, la visibilité des agences, l'exposition des agents de crédit et la qualité des emprunteurs sur un seul écran.",
   clients: "Enregistrez les clients, rattachez-les à la bonne agence et gardez les notes de relation au plus près du portefeuille.",
-  loans: "N'accordez de nouveaux crédits qu'après validation du contrôle IA sur le cadre juridique applicable à votre institution.",
+  loans: `N'accordez de nouveaux crédits qu'après validation du contrôle IA sur le cadre juridique applicable à votre institution et sur le plafond interne de ${INTERNAL_INTEREST_RATE_CEILING}%.`,
   repayments: "Enregistrez les remboursements avec le même filtre de conformité pour garder les encaissements cohérents avec le portefeuille et la réglementation.",
   advisor: "Interrogez l'IA intégrée sur la réglementation microfinance africaine, la couverture pays, l'état des sources et les priorités du portefeuille."
 };
@@ -1073,6 +1075,13 @@ function buildCountryCitations(country, index, limit = 4) {
 }
 
 function buildPortfolioAnswer(normalizedQuestion) {
+  if (/(taux|rate|interet|int[eé]r[eê]t|plafond|ceiling)/.test(normalizedQuestion)) {
+    return {
+      answer: `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${INTERNAL_INTEREST_RATE_CEILING}%. Cette règle maison reste plus stricte que le plafond réglementaire externe et c'est elle qui pilote le filtre de conformité de l'application.`,
+      citations: []
+    };
+  }
+
   const outstanding = state.loans.reduce((sum, loan) => sum + Number(loan.outstanding || 0), 0);
   const lateLoans = state.loans
     .filter((loan) => loan.status === "Late")
@@ -1200,6 +1209,13 @@ async function answerStaticAiQuestion(question) {
   const normalizedQuestion = normalizeSearchText(question);
   const index = await getStaticKnowledgeIndex();
 
+  if (/(taux|rate|interet|int[eé]r[eê]t|plafond|ceiling)/.test(normalizedQuestion)) {
+    return {
+      answer: `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${INTERNAL_INTEREST_RATE_CEILING}%. Cette règle maison reste plus stricte que le plafond réglementaire externe et c'est elle qui pilote le filtre de conformité de l'application.`,
+      citations: []
+    };
+  }
+
   if (/(dossier|portefeuille|retard|suivi|agence|client|credit|remboursement)/.test(normalizedQuestion)) {
     return buildPortfolioAnswer(normalizedQuestion);
   }
@@ -1290,7 +1306,7 @@ function setAiLoadingState(isLoading) {
 function renderComplianceIdleStates() {
   renderComplianceIdleState(
     els.loanComplianceCard,
-    "Chaque nouveau crédit est contrôlé avant enregistrement afin de limiter les écarts réglementaires."
+    `Chaque nouveau crédit est contrôlé avant enregistrement afin de limiter les écarts réglementaires et de respecter le plafond interne de ${INTERNAL_INTEREST_RATE_CEILING}%.`
   );
   renderComplianceIdleState(
     els.repaymentComplianceCard,
@@ -1550,6 +1566,23 @@ function localComplianceGate(operationType, operationData) {
         risks: ["Le taux d'intérêt ou la durée du crédit est absent ou hors plage valide."],
         requiredActions: ["Revoyez le taux d'intérêt et la durée avant de relancer l'opération."],
         scopeNote: "Ce blocage provient d'un contrôle de cohérence local avant l'analyse réglementaire.",
+        citations: []
+      };
+    }
+
+    if (interestRate > INTERNAL_INTEREST_RATE_CEILING) {
+      return {
+        decision: "BLOCK",
+        summary: `Le crédit a été bloqué car le taux proposé dépasse le plafond interne CIREX fixé à ${INTERNAL_INTEREST_RATE_CEILING}%.`,
+        risks: [
+          `Le taux d'intérêt proposé (${interestRate}%) dépasse la politique interne de tarification.`,
+          "L'opération serait incohérente avec la règle maison appliquée aux nouveaux crédits."
+        ],
+        requiredActions: [
+          `Ramenez le taux à ${INTERNAL_INTEREST_RATE_CEILING}% ou moins avant de relancer l'opération.`,
+          "Conservez une trace de la décision tarifaire dans le dossier de crédit."
+        ],
+        scopeNote: `Règle interne CIREX : plafond de taux fixé à ${INTERNAL_INTEREST_RATE_CEILING}% pour les nouveaux crédits.`,
         citations: []
       };
     }
