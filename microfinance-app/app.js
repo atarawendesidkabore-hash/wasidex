@@ -1,4 +1,4 @@
-const STORAGE_KEY = "cirex_microfinance_state_v2";
+const STORAGE_KEY = "cirex_microfinance_state_v3";
 const IS_STATIC_PUBLIC_DEMO = window.location.hostname.endsWith("github.io");
 const API_BASE = window.location.protocol === "file:" ? "http://localhost:3100" : IS_STATIC_PUBLIC_DEMO ? null : "";
 const SOURCE_STATUS_POLL_MS = 5 * 60 * 1000;
@@ -17,7 +17,7 @@ const seedState = {
     institutionCountry: "Côte d’Ivoire",
     legalRegion: "UEMOA / BCEAO",
     baseCurrency: "XOF",
-    lastUpdated: "2026-03-23"
+    lastUpdated: "2026-03-29"
   },
   branches: [
     { id: "BR-01", name: "Abidjan Centre", region: "Abidjan" },
@@ -29,21 +29,9 @@ const seedState = {
     { id: "OF-02", name: "Awa Bamba", branchId: "BR-02" },
     { id: "OF-03", name: "Serge Yao", branchId: "BR-03" }
   ],
-  clients: [
-    { id: "CL-1001", name: "Aminata Kone", sector: "Commerce d'anacarde", region: "Bouaké", phone: "+225 0701010101", branchId: "BR-02", officerId: "OF-02", notes: "Présence solide sur le marché local." },
-    { id: "CL-1002", name: "Kouadio N'Dri", sector: "Producteur de cacao", region: "Daloa", phone: "+225 0702020202", branchId: "BR-03", officerId: "OF-03", notes: "Trésorerie saisonnière à surveiller." },
-    { id: "CL-1003", name: "Mariam Traore", sector: "Transformation d'huile de palme", region: "Yamoussoukro", phone: "+225 0703030303", branchId: "BR-01", officerId: "OF-01", notes: "Cliente en développement." }
-  ],
-  loans: [
-    { id: "LN-2001", clientId: "CL-1001", branchId: "BR-02", officerId: "OF-02", purpose: "Campagne d'achat d'anacarde", principal: 850000, outstanding: 640000, interestRate: 14, termMonths: 8, nextDueDate: "2026-03-25", status: "Current", riskFlag: "Low" },
-    { id: "LN-2002", clientId: "CL-1002", branchId: "BR-03", officerId: "OF-03", purpose: "Intrants agricoles", principal: 1200000, outstanding: 930000, interestRate: 16, termMonths: 10, nextDueDate: "2026-03-21", status: "Watch", riskFlag: "Medium" },
-    { id: "LN-2003", clientId: "CL-1003", branchId: "BR-01", officerId: "OF-01", purpose: "Matériel d'emballage", principal: 650000, outstanding: 410000, interestRate: 13, termMonths: 6, nextDueDate: "2026-03-18", status: "Late", riskFlag: "High" }
-  ],
-  repayments: [
-    { id: "RP-4001", loanId: "LN-2001", amount: 120000, paymentDate: "2026-03-10", note: "Encaissement en espèces" },
-    { id: "RP-4002", loanId: "LN-2002", amount: 95000, paymentDate: "2026-03-12", note: "Paiement mobile money" },
-    { id: "RP-4003", loanId: "LN-2003", amount: 40000, paymentDate: "2026-03-03", note: "Remboursement partiel sur le terrain" }
-  ]
+  clients: [],
+  loans: [],
+  repayments: []
 };
 
 let state = loadState();
@@ -396,10 +384,14 @@ function renderShell() {
 }
 
 function populateSelects() {
-  const clientOptions = state.clients.map((client) => `<option value="${client.id}">${client.name} - ${client.sector}</option>`).join("");
+  const clientOptions = state.clients.length
+    ? state.clients.map((client) => `<option value="${client.id}">${client.name} - ${client.sector}</option>`).join("")
+    : `<option value="" selected disabled>Aucun client enregistré</option>`;
   const branchOptions = state.branches.map((branch) => `<option value="${branch.id}">${branch.name} - ${branch.region}</option>`).join("");
   const officerOptions = state.officers.map((officer) => `<option value="${officer.id}">${officer.name} - ${getBranch(officer.branchId)?.name || officer.branchId}</option>`).join("");
-  const loanOptions = state.loans.map((loan) => `<option value="${loan.id}">${loan.id} - ${getClient(loan.clientId)?.name || "Client inconnu"}</option>`).join("");
+  const loanOptions = state.loans.length
+    ? state.loans.map((loan) => `<option value="${loan.id}">${loan.id} - ${getClient(loan.clientId)?.name || "Client inconnu"}</option>`).join("")
+    : `<option value="" selected disabled>Aucun crédit enregistré</option>`;
   els.loanClientSelect.innerHTML = clientOptions;
   els.clientBranchSelect.innerHTML = branchOptions;
   els.loanBranchSelect.innerHTML = branchOptions;
@@ -475,6 +467,24 @@ function renderOverview() {
 }
 
 function renderClients() {
+  if (!state.clients.length) {
+    els.clientList.innerHTML = `
+      <article class="record-card empty-state-card">
+        <header>
+          <div>
+            <h3>Portefeuille client vide</h3>
+            <p>Aucun client n'est encore enregistré dans cette instance publique de CIREX.</p>
+          </div>
+          <span class="pill good">0 dossier</span>
+        </header>
+        <div class="record-row">
+          <span>Commencez par créer votre premier client avec le formulaire à gauche.</span>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
   els.clientList.innerHTML = state.clients.map((client) => {
     const score = scoreClient(client.id);
     const loanTotal = sum(state.loans.filter((loan) => loan.clientId === client.id).map((loan) => loan.outstanding));
@@ -508,6 +518,24 @@ function renderClients() {
 }
 
 function renderLoans() {
+  if (!state.loans.length) {
+    els.loanList.innerHTML = `
+      <article class="record-card empty-state-card">
+        <header>
+          <div>
+            <h3>Aucun crédit en portefeuille</h3>
+            <p>Le portefeuille public démarre volontairement vide pour vous laisser construire vos propres dossiers.</p>
+          </div>
+          <span class="pill good">0 crédit</span>
+        </header>
+        <div class="record-row">
+          <span>Ajoutez d'abord un client, puis créez un premier crédit.</span>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
   els.loanList.innerHTML = state.loans.map((loan) => `
     <article class="record-card">
       <header>
@@ -534,6 +562,24 @@ function renderLoans() {
 }
 
 function renderRepayments() {
+  if (!state.repayments.length) {
+    els.repaymentList.innerHTML = `
+      <article class="record-card empty-state-card">
+        <header>
+          <div>
+            <h3>Aucun remboursement saisi</h3>
+            <p>Le journal d'encaissement est vide tant qu'aucun remboursement n'a encore été enregistré.</p>
+          </div>
+          <span class="pill good">0 paiement</span>
+        </header>
+        <div class="record-row">
+          <span>Les prochains paiements apparaîtront ici après création des crédits et saisie des encaissements.</span>
+        </div>
+      </article>
+    `;
+    return;
+  }
+
   els.repaymentList.innerHTML = state.repayments.slice(0, 12).map((repayment) => {
     const loan = state.loans.find((entry) => entry.id === repayment.loanId);
     const client = loan ? getClient(loan.clientId) : null;

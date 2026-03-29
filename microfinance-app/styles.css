@@ -520,6 +520,14 @@ textarea {
   border-radius: var(--radius-md);
 }
 
+.empty-state-card {
+  border-style: dashed;
+  border-color: rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(circle at top right, rgba(241, 179, 73, 0.08), transparent 34%),
+    rgba(255, 255, 255, 0.03);
+}
+
 .stack-card {
   background: rgba(255, 255, 255, 0.03);
 }
