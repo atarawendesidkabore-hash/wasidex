@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#081728">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WASI App">
+  <title>WASI App</title>
+  <link rel="manifest" href="./wasi-app.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./wasi-app.css">
+</head>
+<body>
+  <div class="page-orb orb-a"></div>
+  <div class="page-orb orb-b"></div>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-lockup">
+        <a class="brand-mark" href="./index.html">WASI</a>
+        <div>
+          <div class="eyebrow">Whole African Strategic Intelligence</div>
+          <h1>WASI App</h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button class="chip-btn" id="install-btn" type="button" hidden>Installer</button>
+        <div class="status-chip" id="network-status">En ligne</div>
+      </div>
+    </header>
+
+    <main class="app-main">
+      <section class="hero-card">
+        <div class="hero-topline">
+          <span class="hero-chip">Super app WASI</span>
+          <a class="hero-link" href="./index.html">Ouvrir le DEX complet</a>
+        </div>
+        <h2>Une seule app pour piloter WASI Intelligence et WASI DEX</h2>
+        <p>
+          Accédez à l’intelligence stratégique, aux instruments AFEX, aux vues pays, au
+          change XOF et aux apps connectées dans une interface pensée téléphone.
+        </p>
+        <div class="hero-actions">
+          <button class="primary-btn" data-jump-screen="intelligence" type="button">Lancer WASI Intelligence</button>
+          <button class="ghost-btn" data-jump-screen="dex" type="button">Voir WASI DEX</button>
+        </div>
+      </section>
+
+      <section class="screen active" id="screen-home">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Vue rapide</div>
+              <h3>Pilotage instantané</h3>
+            </div>
+            <button class="inline-chip" data-jump-screen="apps" type="button">Apps liées</button>
+          </div>
+          <div class="metric-grid" id="overview-metrics"></div>
+        </article>
+
+        <article class="section-card spotlight">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Modules</div>
+              <h3>Accès directs</h3>
+            </div>
+          </div>
+          <div class="module-grid">
+            <button class="module-card module-primary" data-open-module="intelligence" type="button">
+              <div class="module-head">
+                <span class="module-kicker">WASI Intelligence</span>
+                <span class="module-badge">Décision</span>
+              </div>
+              <strong>Analyse stratégique, scoring, cockpit multi-écrans</strong>
+              <p>Ouvre la plateforme d’intelligence complète avec l’accès automatique WASI.</p>
+            </button>
+
+            <button class="module-card" data-open-module="dex" type="button">
+              <div class="module-head">
+                <span class="module-kicker">WASI DEX</span>
+                <span class="module-badge">Marché</span>
+              </div>
+              <strong>54 instruments africains, régions, modèles export et FX</strong>
+              <p>Ouvre le DEX complet pour explorer les familles AFEX et le change XOF.</p>
+            </button>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Terrain</div>
+              <h3>Flux WASI</h3>
+            </div>
+          </div>
+          <div class="timeline-strip" id="timeline-strip"></div>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-intelligence">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">WASI Intelligence</div>
+              <h3>Cockpit stratégique</h3>
+            </div>
+          </div>
+          <div class="detail-stack">
+            <div class="detail-card">
+              <strong>Ce que vous obtenez</strong>
+              <p>
+                Une lecture transversale de l’Afrique: scoring pays, navigation multi-modules,
+                intelligence bancaire, marchés privés et vues opérationnelles WASI.
+              </p>
+            </div>
+            <div class="detail-card">
+              <strong>Mode recommandé</strong>
+              <p>Utilisez WASI Intelligence pour les décisions, puis WASI DEX pour l’exploration détaillée des instruments et des comparaisons FX.</p>
+            </div>
+          </div>
+          <div class="action-row">
+            <a class="primary-btn link-btn" href="https://atarawendesidkabore-hash.github.io/wasi-platform/index.html?excel_auto=1" target="_blank" rel="noreferrer">Ouvrir WASI Intelligence</a>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Processus</div>
+              <h3>Chaîne d’analyse</h3>
+            </div>
+          </div>
+          <div class="process-strip" id="process-strip"></div>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-dex">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">WASI DEX</div>
+              <h3>Vue synthèse AFEX</h3>
+            </div>
+            <a class="inline-chip" href="./index.html">DEX complet</a>
+          </div>
+          <div class="metric-grid" id="dex-metrics"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Sous-familles</div>
+              <h3>Répartition régionale</h3>
+            </div>
+          </div>
+          <div class="region-grid" id="region-grid"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Ressources</div>
+              <h3>Fichiers DEX</h3>
+            </div>
+          </div>
+          <div class="detail-stack">
+            <a class="detail-card detail-link" href="./exports/afex_all54_manifest.json" target="_blank" rel="noreferrer">
+              <strong>Manifest JSON</strong>
+              <p>Le package structuré de la famille AFEX et de ses sous-familles.</p>
+            </a>
+            <a class="detail-card detail-link" href="./exports/afex_all54_manifest.md" target="_blank" rel="noreferrer">
+              <strong>Manifest Markdown</strong>
+              <p>Version lisible du package pour partage et revue documentaire.</p>
+            </a>
+          </div>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-apps">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Écosystème</div>
+              <h3>Apps connectées</h3>
+            </div>
+          </div>
+          <div class="module-grid">
+            <a class="module-card" href="./ecosystem-hub/index.html">
+              <div class="module-head">
+                <span class="module-kicker">Ecosystem Hub</span>
+                <span class="module-badge">Hub</span>
+              </div>
+              <strong>Cartographie et orchestration des briques de votre écosystème WASI</strong>
+              <p>Retrouvez les passerelles, modules et zones de coordination du réseau.</p>
+            </a>
+            <a class="module-card" href="./microfinance-app/index.html">
+              <div class="module-head">
+                <span class="module-kicker">CIREX Microfinance</span>
+                <span class="module-badge">Finance</span>
+              </div>
+              <strong>Portefeuille crédit, conformité et relation client</strong>
+              <p>Accédez aux opérations microfinance, au contrôle conformité et au portail client.</p>
+            </a>
+          </div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="eyebrow">Publication</div>
+              <h3>Mode application</h3>
+            </div>
+          </div>
+          <div class="detail-stack">
+            <div class="detail-card">
+              <strong>Installable sur téléphone</strong>
+              <p>L’app peut être ajoutée à l’écran d’accueil pour donner un accès direct à WASI Intelligence et WASI DEX.</p>
+            </div>
+            <div class="detail-card">
+              <strong>Usage recommandé</strong>
+              <p>Utilisez cet écran comme porte d’entrée mobile, puis basculez dans chaque module selon votre besoin métier.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="active" data-screen="home" type="button">
+        <span class="nav-icon">◎</span>
+        <span>Accueil</span>
+      </button>
+      <button data-screen="intelligence" type="button">
+        <span class="nav-icon">✦</span>
+        <span>Intelligence</span>
+      </button>
+      <button data-screen="dex" type="button">
+        <span class="nav-icon">◫</span>
+        <span>DEX</span>
+      </button>
+      <button data-screen="apps" type="button">
+        <span class="nav-icon">⌘</span>
+        <span>Apps</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="./wasi-app.js"></script>
+</body>
+</html>
