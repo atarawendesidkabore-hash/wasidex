@@ -308,8 +308,8 @@ function bindForms() {
       operationType: "loan",
       operationData: draft,
       button: els.loanSubmitBtn,
-      idleLabel: "Contrôler puis créer le crédit",
-      loadingLabel: "Contrôle juridique...",
+      idleLabel: "Contrôler puis valider le crédit",
+      loadingLabel: "Contrôle et validation...",
       resultCard: els.loanComplianceCard
     });
 
@@ -334,7 +334,7 @@ function bindForms() {
     persistAndRefresh(event.currentTarget);
     renderComplianceResult(els.loanComplianceCard, {
       ...compliance,
-      summary: `${compliance.summary} Le crédit a bien été enregistré dans CIREX.`,
+      summary: `${compliance.summary} Le crédit a bien été validé et enregistré dans CIREX.`,
     });
   });
 
