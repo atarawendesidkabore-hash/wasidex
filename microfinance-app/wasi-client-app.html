@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#081728">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>WASI Client App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./wasi-client-app.css">
+</head>
+<body>
+  <div class="access-gate" id="access-gate">
+    <div class="gate-card">
+      <div class="gate-badge">WASI Client App</div>
+      <h1>Investissement client sur mobile</h1>
+      <p class="gate-copy">
+        Une interface téléphone simple pour permettre à vos clients CIREX d'acheter vos actions émises,
+        accéder aux fonds WASI et suivre leur portefeuille depuis un seul écran.
+      </p>
+      <label class="sr-only" for="customer-access-input">Code client ou téléphone</label>
+      <input id="customer-access-input" class="gate-input" type="text" placeholder="Code client CIREX ou téléphone" autocomplete="off">
+      <button id="access-btn" class="primary-btn" type="button">Ouvrir l'app client</button>
+      <button id="demo-access-btn" class="secondary-btn" type="button">Entrer en démonstration</button>
+      <p class="gate-hint">Accès réservé aux clients disposant d'au moins un prêt actif. Des profils de démonstration restent disponibles pour tester l'app.</p>
+      <div id="demo-access-list" class="demo-list"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">
+    <span id="toast-message"></span>
+    <button id="toast-close" type="button" aria-label="Fermer la notification">&times;</button>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
+    <header class="app-header">
+      <div class="brand-lockup">
+        <a class="header-link" href="./index.html">CIREX</a>
+        <div>
+          <div class="brand-eyebrow">WASI Client App</div>
+          <div class="brand-title">Bourse privée sur mobile</div>
+        </div>
+      </div>
+      <button id="switch-customer-btn" class="header-chip" type="button">Changer de client</button>
+    </header>
+
+    <main class="app-main">
+      <section class="hero-panel">
+        <div class="hero-topline">
+          <span class="hero-chip" id="hero-tier">Profil -</span>
+          <a class="hero-link" href="./wasi-customer-portal.html">Portail complet</a>
+        </div>
+        <h1 id="hero-name">Client CIREX</h1>
+        <p id="hero-subtitle" class="hero-subtitle"></p>
+        <div class="hero-metrics" id="hero-metrics"></div>
+        <div class="hero-actions">
+          <button class="cta-btn" data-jump-screen="invest" data-highlight-asset="CIREX-PS" type="button">Acheter CIREX</button>
+          <button class="ghost-btn" data-jump-screen="wallet" type="button">Mon portefeuille</button>
+          <a class="ghost-btn link-btn" href="https://atarawendesidkabore-hash.github.io/wasi-platform/index.html?excel_auto=1" target="_blank" rel="noreferrer">WASI Intelligence</a>
+        </div>
+      </section>
+
+      <section class="screen active" id="screen-home">
+        <article class="section-card spotlight-card">
+          <div class="section-kicker">Émission prioritaire</div>
+          <div id="featured-stock"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Sélection rapide</div>
+              <h2>Opportunités pour ce client</h2>
+            </div>
+            <button class="inline-link" data-jump-screen="invest" type="button">Voir tout</button>
+          </div>
+          <div id="recommended-list" class="asset-stack"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-kicker">Accès client</div>
+          <div id="access-summary" class="detail-stack"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-kicker">Parcours d'émission</div>
+          <div id="issuance-steps" class="step-strip"></div>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-invest">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Marché client</div>
+              <h2>Acheter un instrument</h2>
+            </div>
+          </div>
+          <div id="asset-filters" class="filter-row"></div>
+          <div id="market-list" class="asset-stack"></div>
+        </article>
+
+        <article class="section-card buy-card">
+          <div class="section-kicker">Ticket d'achat</div>
+          <div id="selected-asset-card"></div>
+          <div class="stepper-label">Quantité</div>
+          <div class="quantity-stepper">
+            <button id="qty-minus" type="button" aria-label="Réduire">-</button>
+            <input id="order-quantity" type="number" min="1" step="1" value="10">
+            <button id="qty-plus" type="button" aria-label="Augmenter">+</button>
+          </div>
+          <div id="order-summary" class="order-summary"></div>
+          <button id="place-order-btn" class="primary-btn wide-btn" type="button">Acheter maintenant</button>
+          <p class="order-note">L'ordre reste enregistré dans le portefeuille client et doit respecter vos règles internes d'accès marché.</p>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-wallet">
+        <article class="section-card">
+          <div class="section-kicker">Synthèse</div>
+          <div id="wallet-metrics" class="wallet-metrics"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Portefeuille</div>
+              <h2>Lignes détenues</h2>
+            </div>
+          </div>
+          <div id="holdings-list" class="detail-stack"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Historique</div>
+              <h2>Ordres récents</h2>
+            </div>
+          </div>
+          <div id="order-history" class="detail-stack"></div>
+        </article>
+      </section>
+
+      <section class="screen" id="screen-advice">
+        <article class="section-card">
+          <div class="section-header">
+            <div>
+              <div class="section-kicker">Conseil WASI</div>
+              <h2>Guidage client</h2>
+            </div>
+          </div>
+          <div id="advice-summary" class="detail-stack"></div>
+        </article>
+
+        <article class="section-card">
+          <div class="section-kicker">Questions rapides</div>
+          <div id="advice-suggestions" class="suggestion-grid"></div>
+          <div id="advice-thread" class="thread-list"></div>
+        </article>
+      </section>
+    </main>
+
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="active" data-screen="home" type="button">
+        <span class="nav-icon">◎</span>
+        <span>Accueil</span>
+      </button>
+      <button data-screen="invest" type="button">
+        <span class="nav-icon">¤</span>
+        <span>Acheter</span>
+      </button>
+      <button data-screen="wallet" type="button">
+        <span class="nav-icon">◫</span>
+        <span>Portefeuille</span>
+      </button>
+      <button data-screen="advice" type="button">
+        <span class="nav-icon">✦</span>
+        <span>Conseil</span>
+      </button>
+    </nav>
+  </div>
+
+  <script src="./wasi-client-app.js"></script>
+</body>
+</html>
