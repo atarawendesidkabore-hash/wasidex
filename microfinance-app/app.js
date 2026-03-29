@@ -2,7 +2,13 @@ const STORAGE_KEY = "cirex_microfinance_state_v3";
 const IS_STATIC_PUBLIC_DEMO = window.location.hostname.endsWith("github.io");
 const API_BASE = window.location.protocol === "file:" ? "http://localhost:3100" : IS_STATIC_PUBLIC_DEMO ? null : "";
 const SOURCE_STATUS_POLL_MS = 5 * 60 * 1000;
-const INTERNAL_INTEREST_RATE_CEILING = 6;
+const INTEREST_CEILING_POLICY = [
+  { minimumClients: 0, ceiling: 6, label: "Palier initial" },
+  { minimumClients: 1000, ceiling: 9, label: "Palier croissance" },
+  { minimumClients: 3000, ceiling: 12, label: "Palier maturité" }
+];
+const DEFAULT_INTEREST_RATE_CEILING = INTEREST_CEILING_POLICY[0].ceiling;
+const MAX_INTEREST_RATE_CEILING = INTEREST_CEILING_POLICY[INTEREST_CEILING_POLICY.length - 1].ceiling;
 const STATIC_KNOWLEDGE_PATH = "./data/africa-microfinance-index.json";
 const AI_EXAMPLES = [
   "La réglementation BCEAO sur la microfinance s'applique-t-elle au Sénégal ?",
@@ -19,7 +25,8 @@ const seedState = {
     institutionCountry: "Côte d’Ivoire",
     legalRegion: "UEMOA / BCEAO",
     baseCurrency: "XOF",
-    lastUpdated: "2026-03-29"
+    lastUpdated: "2026-03-29",
+    interestCeilingCurrent: DEFAULT_INTEREST_RATE_CEILING
   },
   branches: [
     { id: "BR-01", name: "Abidjan Centre", region: "Abidjan" },
@@ -60,7 +67,7 @@ const RISK_LABELS = {
 const viewMeta = {
   overview: "Suivez les signaux du portefeuille, la visibilité des agences, l'exposition des agents de crédit et la qualité des emprunteurs sur un seul écran.",
   clients: "Enregistrez les clients, rattachez-les à la bonne agence et gardez les notes de relation au plus près du portefeuille.",
-  loans: `N'accordez de nouveaux crédits qu'après validation du contrôle IA sur le cadre juridique applicable à votre institution et sur le plafond interne de ${INTERNAL_INTEREST_RATE_CEILING}%.`,
+  loans: `N'accordez de nouveaux crédits qu'après validation du contrôle IA sur le cadre juridique applicable à votre institution et sur le plafond interne progressif CIREX : ${describeInterestCeilingPolicy()}`,
   repayments: "Enregistrez les remboursements avec le même filtre de conformité pour garder les encaissements cohérents avec le portefeuille et la réglementation.",
   advisor: "Interrogez l'IA intégrée sur la réglementation microfinance africaine, la couverture pays, l'état des sources et les priorités du portefeuille."
 };
@@ -92,6 +99,7 @@ const els = {
   loanClientSelect: document.getElementById("loan-client-select"),
   loanBranchSelect: document.getElementById("loan-branch-select"),
   loanOfficerSelect: document.getElementById("loan-officer-select"),
+  loanInterestInput: document.querySelector('#loan-form [name="interestRate"]'),
   loanComplianceCard: document.getElementById("loan-compliance-card"),
   loanSubmitBtn: document.getElementById("loan-submit-btn"),
   loanList: document.getElementById("loan-list"),
@@ -157,12 +165,96 @@ function normalizeState(saved) {
     };
   }) : stateCopy.loans;
   stateCopy.repayments = Array.isArray(saved.repayments) ? saved.repayments : stateCopy.repayments;
+  applyInterestCeilingPolicy(stateCopy);
   return stateCopy;
 }
 
 function saveState() {
+  applyInterestCeilingPolicy(state);
   state.metadata.lastUpdated = new Date().toISOString().slice(0, 10);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+}
+
+function getInterestCeilingStageForClientCount(clientCount) {
+  const safeClientCount = Number.isFinite(Number(clientCount)) ? Number(clientCount) : 0;
+  return INTEREST_CEILING_POLICY.reduce(
+    (selectedStage, stage) => (safeClientCount >= stage.minimumClients ? stage : selectedStage),
+    INTEREST_CEILING_POLICY[0]
+  );
+}
+
+function getInterestCeilingStageForCeiling(ceiling) {
+  const safeCeiling = Number.isFinite(Number(ceiling)) ? Number(ceiling) : DEFAULT_INTEREST_RATE_CEILING;
+  return [...INTEREST_CEILING_POLICY]
+    .reverse()
+    .find((stage) => safeCeiling >= stage.ceiling) || INTEREST_CEILING_POLICY[0];
+}
+
+function applyInterestCeilingPolicy(targetState) {
+  if (!targetState?.metadata) return targetState;
+
+  const qualifiedStage = getInterestCeilingStageForClientCount(targetState.clients?.length || 0);
+  const storedCeiling = Number(targetState.metadata.interestCeilingCurrent);
+  const ratchetedCeiling = Math.max(
+    qualifiedStage.ceiling,
+    Number.isFinite(storedCeiling) ? storedCeiling : DEFAULT_INTEREST_RATE_CEILING
+  );
+  const currentCeiling = Math.min(ratchetedCeiling, MAX_INTEREST_RATE_CEILING);
+  const currentStage = getInterestCeilingStageForCeiling(currentCeiling);
+
+  targetState.metadata.interestCeilingCurrent = currentCeiling;
+  targetState.metadata.interestCeilingUnlockedAtClients = currentStage.minimumClients;
+
+  return targetState;
+}
+
+function getCurrentInterestCeiling() {
+  const storedCeiling = Number(state.metadata?.interestCeilingCurrent);
+  return Number.isFinite(storedCeiling) ? storedCeiling : DEFAULT_INTEREST_RATE_CEILING;
+}
+
+function getNextInterestCeilingStage() {
+  const currentCeiling = getCurrentInterestCeiling();
+  return INTEREST_CEILING_POLICY.find((stage) => stage.ceiling > currentCeiling) || null;
+}
+
+function formatCount(value) {
+  return Number(value || 0).toLocaleString("fr-FR");
+}
+
+function describeInterestCeilingPolicy() {
+  return "6% au départ, 9% dès 1 000 clients, puis 12% dès 3 000 clients. Une fois un palier atteint, il reste acquis.";
+}
+
+function getInterestCeilingStatusText() {
+  const currentCeiling = getCurrentInterestCeiling();
+  const nextStage = getNextInterestCeilingStage();
+
+  if (nextStage) {
+    return `Le plafond interne actif est de ${currentCeiling}%. Il passera à ${nextStage.ceiling}% lorsque CIREX atteindra ${formatCount(nextStage.minimumClients)} clients.`;
+  }
+
+  return `Le plafond interne actif est de ${currentCeiling}%. Le palier final de ${MAX_INTEREST_RATE_CEILING}% est acquis pour la suite des opérations.`;
+}
+
+function syncLoanInterestInput() {
+  if (!els.loanInterestInput) return;
+
+  const currentCeiling = getCurrentInterestCeiling();
+  els.loanInterestInput.max = String(currentCeiling);
+  els.loanInterestInput.title = `Plafond interne actuel : ${currentCeiling}%. ${describeInterestCeilingPolicy()}`;
+}
+
+function buildInterestCeilingAnswer() {
+  const currentCeiling = getCurrentInterestCeiling();
+  const nextStage = getNextInterestCeilingStage();
+
+  return {
+    answer: nextStage
+      ? `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${currentCeiling}%. La règle maison est évolutive et irréversible: ${describeInterestCeilingPolicy()} Avec ${state.clients.length} clients dans le portefeuille actuel, le prochain palier sera ${nextStage.ceiling}% à ${formatCount(nextStage.minimumClients)} clients.`
+      : `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${currentCeiling}%. ${describeInterestCeilingPolicy()} Le palier final de ${MAX_INTEREST_RATE_CEILING}% est déjà acquis pour la suite de la microfinance.`,
+    citations: []
+  };
 }
 
 function getViewLabel(viewKey) {
@@ -312,6 +404,7 @@ function persistAndRefresh(form) {
 }
 
 function renderAll() {
+  syncLoanInterestInput();
   renderShell();
   populateSelects();
   renderOverview();
@@ -326,6 +419,8 @@ function renderShell() {
   const totalRepaid = sum(state.repayments.map((repayment) => repayment.amount));
   const lateLoans = state.loans.filter((loan) => loan.status === "Late");
   const watchLoans = state.loans.filter((loan) => loan.status === "Watch");
+  const currentInterestCeiling = getCurrentInterestCeiling();
+  const nextInterestCeilingStage = getNextInterestCeilingStage();
   const nextDueLoan = [...state.loans]
     .filter((loan) => loan.nextDueDate)
     .sort((a, b) => a.nextDueDate.localeCompare(b.nextDueDate))[0];
@@ -343,6 +438,8 @@ function renderShell() {
       <div class="signal-row"><span>Pays</span><strong>${state.metadata.institutionCountry || "-"}</strong></div>
       <div class="signal-row"><span>Périmètre légal</span><strong>${state.metadata.legalRegion || "-"}</strong></div>
       <div class="signal-row"><span>Devise</span><strong>${state.metadata.baseCurrency}</strong></div>
+      <div class="signal-row"><span>Plafond interne</span><strong>${currentInterestCeiling}%</strong></div>
+      <div class="signal-row"><span>Prochain palier</span><strong>${nextInterestCeilingStage ? `${nextInterestCeilingStage.ceiling}% à ${formatCount(nextInterestCeilingStage.minimumClients)} clients` : "Palier final acquis"}</strong></div>
       <div class="signal-row"><span>Encours crédit</span><strong>${money(outstanding)}</strong></div>
       <div class="signal-row"><span>Total encaissé</span><strong>${money(totalRepaid)}</strong></div>
     </div>
@@ -1076,10 +1173,7 @@ function buildCountryCitations(country, index, limit = 4) {
 
 function buildPortfolioAnswer(normalizedQuestion) {
   if (/(taux|rate|interet|int[eé]r[eê]t|plafond|ceiling)/.test(normalizedQuestion)) {
-    return {
-      answer: `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${INTERNAL_INTEREST_RATE_CEILING}%. Cette règle maison reste plus stricte que le plafond réglementaire externe et c'est elle qui pilote le filtre de conformité de l'application.`,
-      citations: []
-    };
+    return buildInterestCeilingAnswer();
   }
 
   const outstanding = state.loans.reduce((sum, loan) => sum + Number(loan.outstanding || 0), 0);
@@ -1210,10 +1304,7 @@ async function answerStaticAiQuestion(question) {
   const index = await getStaticKnowledgeIndex();
 
   if (/(taux|rate|interet|int[eé]r[eê]t|plafond|ceiling)/.test(normalizedQuestion)) {
-    return {
-      answer: `Dans CIREX, le plafond interne actuellement appliqué aux nouveaux crédits est de ${INTERNAL_INTEREST_RATE_CEILING}%. Cette règle maison reste plus stricte que le plafond réglementaire externe et c'est elle qui pilote le filtre de conformité de l'application.`,
-      citations: []
-    };
+    return buildInterestCeilingAnswer();
   }
 
   if (/(dossier|portefeuille|retard|suivi|agence|client|credit|remboursement)/.test(normalizedQuestion)) {
@@ -1306,7 +1397,7 @@ function setAiLoadingState(isLoading) {
 function renderComplianceIdleStates() {
   renderComplianceIdleState(
     els.loanComplianceCard,
-    `Chaque nouveau crédit est contrôlé avant enregistrement afin de limiter les écarts réglementaires et de respecter le plafond interne de ${INTERNAL_INTEREST_RATE_CEILING}%.`
+    `Chaque nouveau crédit est contrôlé avant enregistrement afin de limiter les écarts réglementaires et de respecter la politique interne CIREX. ${getInterestCeilingStatusText()}`
   );
   renderComplianceIdleState(
     els.repaymentComplianceCard,
@@ -1393,6 +1484,12 @@ function buildRepaymentDraft(form) {
 async function runComplianceCheck({ operationType, operationData, button, idleLabel, loadingLabel, resultCard }) {
   const institutionCountry = state.metadata.institutionCountry || "Côte d’Ivoire";
   const operationLabel = operationType === "loan" ? "crédit" : "remboursement";
+  const operationDataWithPolicy = {
+    ...operationData,
+    policyInterestCeiling: getCurrentInterestCeiling(),
+    policyCustomerCount: state.clients.length,
+    policyRuleSummary: describeInterestCeilingPolicy()
+  };
 
   renderComplianceLoadingState(
     resultCard,
@@ -1402,14 +1499,14 @@ async function runComplianceCheck({ operationType, operationData, button, idleLa
 
   try {
     const payload = IS_STATIC_PUBLIC_DEMO
-      ? await runStaticComplianceCheck({ operationType, operationData, institutionCountry })
+      ? await runStaticComplianceCheck({ operationType, operationData: operationDataWithPolicy, institutionCountry })
       : await (async () => {
           const response = await fetch(apiUrl("/api/compliance/check"), {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               operationType,
-              operationData,
+              operationData: operationDataWithPolicy,
               institutionCountry,
               portfolioContext: buildPortfolioContext()
             })
@@ -1547,6 +1644,9 @@ function localComplianceGate(operationType, operationData) {
     const principal = Number(operationData.principal);
     const interestRate = Number(operationData.interestRate);
     const termMonths = Number(operationData.termMonths);
+    const currentInterestCeiling = Number.isFinite(Number(operationData.policyInterestCeiling))
+      ? Math.min(MAX_INTEREST_RATE_CEILING, Math.max(DEFAULT_INTEREST_RATE_CEILING, Number(operationData.policyInterestCeiling)))
+      : getCurrentInterestCeiling();
 
     if (!Number.isFinite(principal) || principal <= 0) {
       return {
@@ -1570,19 +1670,20 @@ function localComplianceGate(operationType, operationData) {
       };
     }
 
-    if (interestRate > INTERNAL_INTEREST_RATE_CEILING) {
+    if (interestRate > currentInterestCeiling) {
       return {
         decision: "BLOCK",
-        summary: `Le crédit a été bloqué car le taux proposé dépasse le plafond interne CIREX fixé à ${INTERNAL_INTEREST_RATE_CEILING}%.`,
+        summary: `Le crédit a été bloqué car le taux proposé dépasse le plafond interne CIREX actuellement fixé à ${currentInterestCeiling}%.`,
         risks: [
           `Le taux d'intérêt proposé (${interestRate}%) dépasse la politique interne de tarification.`,
+          `Avec ${Number.isFinite(Number(operationData.policyCustomerCount)) ? Number(operationData.policyCustomerCount) : 0} clients retenus, le palier interne applicable reste ${currentInterestCeiling}%.`,
           "L'opération serait incohérente avec la règle maison appliquée aux nouveaux crédits."
         ],
         requiredActions: [
-          `Ramenez le taux à ${INTERNAL_INTEREST_RATE_CEILING}% ou moins avant de relancer l'opération.`,
+          `Ramenez le taux à ${currentInterestCeiling}% ou moins avant de relancer l'opération.`,
           "Conservez une trace de la décision tarifaire dans le dossier de crédit."
         ],
-        scopeNote: `Règle interne CIREX : plafond de taux fixé à ${INTERNAL_INTEREST_RATE_CEILING}% pour les nouveaux crédits.`,
+        scopeNote: `Règle interne CIREX : ${describeInterestCeilingPolicy()} Plafond applicable au dossier actuel : ${currentInterestCeiling}%.`,
         citations: []
       };
     }
@@ -1700,6 +1801,8 @@ function buildPortfolioContext() {
   const watchLoans = state.loans
     .filter((loan) => loan.status === "Watch")
     .sort((left, right) => right.outstanding - left.outstanding);
+  const currentInterestCeiling = getCurrentInterestCeiling();
+  const nextInterestCeilingStage = getNextInterestCeilingStage();
   const branchExposure = getBranchMetrics()
     .slice(0, 3)
     .map((item) => `${item.branch.name}: ${Math.round(item.outstanding)} XOF d'encours, ${item.lateLoans} dossiers en retard`)
@@ -1722,6 +1825,9 @@ function buildPortfolioContext() {
     `Devise : ${state.metadata.baseCurrency}`,
     `Date de l'instantané : ${state.metadata.lastUpdated}`,
     `Agences : ${state.branches.length}; Agents : ${state.officers.length}; Clients : ${state.clients.length}; Crédits : ${state.loans.length}; Remboursements : ${state.repayments.length}`,
+    `Politique interne de taux : ${describeInterestCeilingPolicy()}`,
+    `Plafond interne actuellement applicable : ${currentInterestCeiling}%`,
+    `Prochain palier interne : ${nextInterestCeilingStage ? `${nextInterestCeilingStage.ceiling}% à ${formatCount(nextInterestCeilingStage.minimumClients)} clients` : "Palier final déjà acquis"}`,
     `Encours total : ${Math.round(outstanding)} XOF`,
     `Dossiers en retard : ${lateLoans.length}`,
     `Dossiers sous surveillance : ${watchLoans.length}`,
