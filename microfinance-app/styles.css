@@ -670,6 +670,17 @@ textarea {
   line-height: 1.7;
 }
 
+.compliance-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.compliance-actions .secondary-btn {
+  width: fit-content;
+  min-width: 240px;
+}
+
 .compliance-lines,
 .compliance-citations {
   display: grid;

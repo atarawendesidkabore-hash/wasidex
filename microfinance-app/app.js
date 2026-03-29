@@ -73,6 +73,7 @@ const viewMeta = {
 };
 
 const aiHistory = [];
+let pendingManualLoanApproval = null;
 let staticKnowledgePromise = null;
 
 const els = {
@@ -300,6 +301,7 @@ function bindForms() {
 
   els.loanForm.addEventListener("submit", async (event) => {
     event.preventDefault();
+    clearPendingManualLoanApproval();
     const form = new FormData(event.currentTarget);
     const draft = buildLoanDraft(form);
     const compliance = await runComplianceCheck({
@@ -311,24 +313,24 @@ function bindForms() {
       resultCard: els.loanComplianceCard
     });
 
-    if (!compliance || compliance.decision !== "APPROVED") {
+    if (!compliance) {
+      clearPendingManualLoanApproval();
       return;
     }
 
-    state.loans.unshift({
-      id: nextId("LN", state.loans, 2000),
-      clientId: draft.clientId,
-      branchId: draft.branchId,
-      officerId: draft.officerId,
-      purpose: draft.purpose,
-      principal: draft.principal,
-      outstanding: draft.principal,
-      interestRate: draft.interestRate,
-      termMonths: draft.termMonths,
-      nextDueDate: draft.nextDueDate,
-      status: draft.status,
-      riskFlag: draft.riskFlag
-    });
+    if (compliance.decision === "REVIEW") {
+      queueManualLoanApproval(draft, compliance);
+      renderComplianceResult(els.loanComplianceCard, buildPendingManualLoanReviewPayload(compliance));
+      return;
+    }
+
+    if (compliance.decision !== "APPROVED") {
+      clearPendingManualLoanApproval();
+      return;
+    }
+
+    createLoanFromDraft(draft, { approvalMode: "auto", complianceDecision: compliance.decision });
+    clearPendingManualLoanApproval();
     persistAndRefresh(event.currentTarget);
     renderComplianceResult(els.loanComplianceCard, {
       ...compliance,
@@ -377,6 +379,7 @@ function bindForms() {
 function bindActions() {
   els.resetBtn.addEventListener("click", () => {
     state = JSON.parse(JSON.stringify(seedState));
+    clearPendingManualLoanApproval();
     saveState();
     renderAll();
     renderComplianceIdleStates();
@@ -395,6 +398,86 @@ function bindActions() {
     if (!button) return;
     printRepaymentReceipt(button.dataset.printRepayment);
   });
+
+  els.loanComplianceCard.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-manual-loan-approve]");
+    if (!button || !pendingManualLoanApproval) return;
+
+    const confirmed = window.confirm(
+      "Confirmez-vous que la revue manuelle du dossier est terminée et que vous souhaitez enregistrer ce crédit dans CIREX ?"
+    );
+    if (!confirmed) return;
+
+    const { draft, compliance } = pendingManualLoanApproval;
+    createLoanFromDraft(draft, { approvalMode: "manual-review", complianceDecision: compliance.decision });
+    clearPendingManualLoanApproval();
+    persistAndRefresh(els.loanForm);
+    renderComplianceResult(els.loanComplianceCard, buildManualLoanApprovalPayload(compliance));
+  });
+}
+
+function clearPendingManualLoanApproval() {
+  pendingManualLoanApproval = null;
+}
+
+function queueManualLoanApproval(draft, compliance) {
+  pendingManualLoanApproval = {
+    draft: JSON.parse(JSON.stringify(draft)),
+    compliance: JSON.parse(JSON.stringify(compliance))
+  };
+}
+
+function createLoanFromDraft(draft, { approvalMode = "auto", complianceDecision = "APPROVED" } = {}) {
+  state.loans.unshift({
+    id: nextId("LN", state.loans, 2000),
+    clientId: draft.clientId,
+    branchId: draft.branchId,
+    officerId: draft.officerId,
+    purpose: draft.purpose,
+    principal: draft.principal,
+    outstanding: draft.principal,
+    interestRate: draft.interestRate,
+    termMonths: draft.termMonths,
+    nextDueDate: draft.nextDueDate,
+    status: draft.status,
+    riskFlag: draft.riskFlag,
+    approvalMode,
+    complianceDecision,
+    manualReviewValidatedAt: approvalMode === "manual-review" ? new Date().toISOString() : null
+  });
+}
+
+function buildPendingManualLoanReviewPayload(compliance) {
+  const requiredActions = Array.isArray(compliance?.requiredActions) ? compliance.requiredActions.filter(Boolean) : [];
+
+  return {
+    ...compliance,
+    requiredActions: [
+      ...requiredActions,
+      "Après votre revue humaine, utilisez le bouton ci-dessous pour valider et enregistrer le prêt dans CIREX."
+    ].slice(0, 4),
+    scopeNote: `${
+      String(compliance?.scopeNote || "").trim() || "Le dossier demande une revue humaine."
+    } La validation manuelle portera sur le dernier dossier contrôlé.`,
+    manualReviewAllowed: true,
+    manualReviewLabel: "Valider le prêt après revue manuelle"
+  };
+}
+
+function buildManualLoanApprovalPayload(compliance) {
+  return {
+    ...compliance,
+    decision: "APPROVED",
+    summary: "Le crédit a été enregistré dans CIREX après revue manuelle confirmée.",
+    scopeNote:
+      "Validation manuelle consignée dans le dossier. Conservez les pièces et les références réglementaires ayant motivé cette décision.",
+    requiredActions: [
+      "Archivez la note de revue manuelle dans le dossier crédit.",
+      "Conservez les références réglementaires et les justificatifs avec le contrat."
+    ],
+    manualReviewAllowed: false,
+    checkedAt: new Date().toISOString()
+  };
 }
 
 function persistAndRefresh(form) {
@@ -656,6 +739,16 @@ function renderLoans() {
         <span class="muted">${loan.interestRate}% sur ${loan.termMonths} mois</span>
         <span class="muted">Score client ${scoreClient(loan.clientId).score}</span>
       </div>
+      ${
+        loan.approvalMode === "manual-review"
+          ? `
+            <div class="record-row">
+              <span class="pill review">Validation manuelle</span>
+              <span class="muted">Revue confirmée le ${prettyDateTime(loan.manualReviewValidatedAt)}</span>
+            </div>
+          `
+          : ""
+      }
     </article>
   `).join("");
 }
@@ -1566,10 +1659,25 @@ function renderComplianceResult(card, payload) {
     ${scopeNote ? `<div class="compliance-note">${escapeHtml(scopeNote)}</div>` : ""}
     ${renderComplianceLines("Points de vigilance", risks.length ? risks : [decision.defaultRisk])}
     ${renderComplianceLines("Actions à mener", requiredActions.length ? requiredActions : [decision.defaultAction])}
+    ${renderComplianceActions(payload)}
     ${citations.length ? renderComplianceCitations(citations) : ""}
     <div class="muted">
       ${checkedAt ? `Contrôle effectué le ${checkedAt}.` : "Contrôle effectué à l'instant."}
       ${sourceAge ? ` Âge des sources juridiques : ${sourceAge}.` : ""}
+    </div>
+  `;
+}
+
+function renderComplianceActions(payload) {
+  if (!payload?.manualReviewAllowed) {
+    return "";
+  }
+
+  return `
+    <div class="compliance-actions">
+      <button class="secondary-btn" type="button" data-manual-loan-approve="true">
+        ${escapeHtml(payload.manualReviewLabel || "Valider le prêt après revue manuelle")}
+      </button>
     </div>
   `;
 }
