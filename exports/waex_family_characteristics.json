@@ -1,0 +1,119 @@
+{
+  "schema_version": "1.0",
+  "package_name": "WAEX Family Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch_family_layer",
+  "platform_note": "Prepared as a generic structured upload package because a public WASI Intelligence import schema could not be verified.",
+  "family_identity": {
+    "family_name": "WAEX Fund Family",
+    "family_code": "WAEX",
+    "full_name": "West Africa Export Index Fund Family",
+    "base_currency": "XOF",
+    "reporting_currency": "XOF",
+    "reference_region": "West Africa / WAEMU corridor economy",
+    "current_member_count": 2,
+    "current_members": [
+      "CIREX",
+      "BUREX"
+    ]
+  },
+  "family_objective": {
+    "primary_objective": "Organize country-specific raw-export benchmark funds inside one regional naming and governance framework.",
+    "secondary_objective": "Create a scalable family structure that can expand to additional West African countries while keeping upload packages and methodology language aligned."
+  },
+  "naming_system": {
+    "umbrella_rule": "WAEX is the umbrella family label.",
+    "country_member_rule": "Country funds use a short country-specific code ending in EX where practical and recognizable.",
+    "current_codes": [
+      "WAEX",
+      "CIREX",
+      "BUREX"
+    ],
+    "pipeline_codes": [
+      "GHAEX",
+      "TOGEX",
+      "BENEX",
+      "MALIEX",
+      "NIGEX"
+    ]
+  },
+  "methodology_framework": {
+    "shared_core": "Country-specific raw-material export benchmarks measured in XOF using long-memory physical export-flow weighting and transparent price references.",
+    "model_types": [
+      {
+        "model_name": "coastal_export_model",
+        "description": "For countries with port-led outward commodity flows."
+      },
+      {
+        "model_name": "landlocked_corridor_model",
+        "description": "For countries where export tonnage moves through border posts, regional corridors, and transit networks rather than domestic seaports."
+      }
+    ],
+    "shared_reconstitution_frequency": "annual",
+    "shared_rebalancing_frequency": "quarterly",
+    "shared_governance_requirement": "documented index committee and source hierarchy"
+  },
+  "member_funds": [
+    {
+      "code": "CIREX",
+      "country": "Cote d'Ivoire",
+      "role": "coastal_anchor_member",
+      "transport_model": "seaborne_loading_and_export_tonnage_logic",
+      "package_path": "wasi-upload/cirex_fund_characteristics.json"
+    },
+    {
+      "code": "BUREX",
+      "country": "Burkina Faso",
+      "role": "landlocked_corridor_member",
+      "transport_model": "road_rail_air_and_transit_corridor_tonnage_logic",
+      "corridor_country_overlay": [
+        "Ghana",
+        "Togo",
+        "Benin",
+        "Cote d'Ivoire",
+        "Mali",
+        "Niger"
+      ],
+      "package_path": "wasi-upload-burex/burex_fund_characteristics.json"
+    }
+  ],
+  "regional_logic": {
+    "coastal_members": [
+      "Cote d'Ivoire"
+    ],
+    "landlocked_members": [
+      "Burkina Faso"
+    ],
+    "corridor_network_focus": [
+      "Ghana",
+      "Togo",
+      "Benin",
+      "Cote d'Ivoire",
+      "Mali",
+      "Niger"
+    ],
+    "family_expansion_thesis": "A single regional family can compare coastal export systems and landlocked corridor export systems without forcing one methodology onto all countries."
+  },
+  "technology_and_distribution": {
+    "wasi_ready": true,
+    "tokenization_ready": true,
+    "cbdc_ready": true,
+    "x402_ready": true,
+    "microfinance_relationship": "family members remain separate from any SFD balance sheet while still supporting advisory and credit-intelligence use cases"
+  },
+  "workspace_assets": {
+    "regional_dashboard": "ecosystem-hub/index.html",
+    "microfinance_app": "microfinance-app/index.html",
+    "country_packages": [
+      "wasi-upload/cirex_fund_characteristics.json",
+      "wasi-upload-burex/burex_fund_characteristics.json"
+    ]
+  },
+  "required_next_documents": [
+    "family_governance_charter",
+    "country_methodology_documents",
+    "regional_brand_guide",
+    "investor_comparison_factsheet",
+    "live_data_source_policy"
+  ]
+}

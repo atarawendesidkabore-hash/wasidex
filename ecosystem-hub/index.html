@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AFEX Africa Export Index Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-orb orb-a"></div>
+  <div class="page-orb orb-b"></div>
+
+  <main class="shell">
+    <header class="topbar panel-surface">
+      <div class="brand-lockup">
+        <a class="back-link" href="../index.html">Back to WASI DEX</a>
+        <div>
+          <div class="eyebrow">AFEX Fund Family</div>
+          <div class="brand-title">WASI Ecosystem Hub</div>
+        </div>
+      </div>
+
+      <div class="topbar-links">
+        <a class="ghost-btn" href="../microfinance-app/index.html">Microfinance</a>
+        <a class="ghost-btn" href="../exports/afex_all54_manifest.md">Manifest</a>
+        <a class="ghost-btn" href="../exports/waex_family_characteristics.json">WAEX Family</a>
+      </div>
+    </header>
+
+    <section class="hero panel-surface">
+      <div class="hero-copy">
+        <div class="eyebrow">Continental Operating Layer</div>
+        <h1>A cleaner control center for the 54-country AFEX architecture.</h1>
+        <p>Track the full Africa Export Index library, supervise regional fund families, review priority prototypes, and open the operational surfaces that feed WASI DEX.</p>
+
+        <div class="hero-actions">
+          <a class="primary-btn" href="../index.html">Open WASI DEX</a>
+          <a class="secondary-btn" href="../exports/afex_all54_manifest.json">Open AFEX Manifest JSON</a>
+          <a class="secondary-btn" href="../exports/cirex_fund_characteristics.md">Open CIREX Notes</a>
+          <a class="secondary-btn" href="../exports/burex_fund_characteristics.md">Open BUREX Notes</a>
+        </div>
+      </div>
+
+      <aside class="hero-side">
+        <article class="signal-card">
+          <div class="signal-label">Primary use</div>
+          <strong>Family supervision</strong>
+          <p>One place to keep regional structure, uploads, prototypes, and coverage aligned before they land in live WASI products.</p>
+        </article>
+
+        <article class="signal-card">
+          <div class="signal-label">Surfaces</div>
+          <div class="signal-list">
+            <span>54 countries</span>
+            <span>5 subfamilies</span>
+            <span>3 methodology models</span>
+            <span>WASI-ready packages</span>
+          </div>
+        </article>
+      </aside>
+    </section>
+
+    <nav class="jump-nav panel-surface" aria-label="Page sections">
+      <a class="jump-link" href="#overview">Overview</a>
+      <a class="jump-link" href="#structure">Structure</a>
+      <a class="jump-link" href="#surfaces">Surfaces</a>
+      <a class="jump-link" href="#map">Country map</a>
+      <a class="jump-link" href="#prototypes">Prototypes</a>
+      <a class="jump-link" href="#methodology">Methodology</a>
+      <a class="jump-link" href="#packages">Packages</a>
+    </nav>
+
+    <section class="stats-grid" id="stats-grid"></section>
+
+    <section class="overview-grid" id="overview">
+      <article class="panel-surface overview-card" id="family-pulse"></article>
+      <article class="panel-surface overview-card" id="model-distribution"></article>
+    </section>
+
+    <section class="section-block" id="structure">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Structure</div>
+          <h2>Umbrella model and regional build blocks</h2>
+          <p>Keep the family naming, regional logic, and country architecture coherent without losing each market's local export reality.</p>
+        </div>
+      </div>
+
+      <div class="family-grid">
+        <article class="panel-surface accent-panel">
+          <div class="eyebrow">Umbrella Model</div>
+          <h3>AFEX</h3>
+          <p>The shared family layer for all 54 sovereign African export-index funds. Each country retains its own commodity logic, while methodology, governance language, and USD comparison remain aligned.</p>
+          <div class="pill-row" id="family-tags"></div>
+        </article>
+
+        <article class="panel-surface">
+          <div class="eyebrow">Regional Subfamilies</div>
+          <h3>5 regional building blocks</h3>
+          <div class="naming-grid" id="subfamily-grid"></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section-block" id="surfaces">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Surfaces</div>
+          <h2>Connected modules</h2>
+          <p>Operational apps, package centers, and future rails grouped as one cleaner ecosystem view.</p>
+        </div>
+      </div>
+      <div class="modules-grid" id="modules-grid"></div>
+    </section>
+
+    <section class="panel-surface" id="map">
+      <div class="section-head split-head">
+        <div>
+          <div class="eyebrow">Regional Map</div>
+          <h2>All 54 countries by subfamily</h2>
+          <p>Filter by region or search by country, code, currency, model, or commodity.</p>
+        </div>
+
+        <label class="search-shell" for="region-search">
+          <span>Find a country</span>
+          <input id="region-search" type="search" placeholder="Search country, code, commodity, currency...">
+        </label>
+      </div>
+
+      <div class="region-filter-row" id="region-filter"></div>
+      <div class="region-container" id="region-container"></div>
+    </section>
+
+    <section class="two-col" id="prototypes">
+      <article class="panel-surface">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Priority Prototypes</div>
+            <h2>Detailed country packages</h2>
+            <p>The most developed country-level packages, surfaced with weights, corridor logic, and ready-to-open documentation.</p>
+          </div>
+        </div>
+        <div class="fund-grid" id="fund-grid"></div>
+      </article>
+
+      <article class="panel-surface">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Architecture</div>
+            <h2>How the family stays coherent</h2>
+            <p>The shared rules that hold the continent-wide library together while preserving local market specificity.</p>
+          </div>
+        </div>
+        <div class="stack" id="family-map"></div>
+      </article>
+    </section>
+
+    <section class="panel-surface" id="methodology">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Methodology Models</div>
+          <h2>Three transport and weighting approaches</h2>
+          <p>Coastal, landlocked, and island methodologies visualized as reusable operating models.</p>
+        </div>
+      </div>
+      <div class="compare-grid" id="methodology-grid"></div>
+    </section>
+
+    <section class="two-col" id="packages">
+      <article class="panel-surface">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Upload Center</div>
+            <h2>Packages ready for WASI DEX</h2>
+            <p>Manifest-level and prototype-level entry points for the package library.</p>
+          </div>
+        </div>
+        <div class="upload-grid" id="upload-center"></div>
+      </article>
+
+      <article class="panel-surface">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Scope Note</div>
+            <h2>Sovereignty and coverage</h2>
+            <p>Key boundaries to keep the library usable, auditable, and ready for legal review.</p>
+          </div>
+        </div>
+        <div class="stack" id="scope-notes"></div>
+      </article>
+    </section>
+
+    <footer class="footer-note panel-surface">
+      <div>
+        <div class="eyebrow">WASI Ecosystem</div>
+        <strong>Cleaner cross-product supervision for AFEX, DEX, package uploads, and prototype governance.</strong>
+      </div>
+      <p>The hub keeps product surfaces visible without replacing the underlying country files, package folders, or legal review process.</p>
+    </footer>
+  </main>
+
+  <script src="./app.js"></script>
+</body>
+</html>

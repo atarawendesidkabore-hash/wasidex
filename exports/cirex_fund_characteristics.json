@@ -1,0 +1,277 @@
+{
+  "schema_version": "1.0",
+  "package_name": "CIREX Fund Characteristics",
+  "generated_on": "2026-03-23",
+  "status": "proposed_pre_launch",
+  "platform_note": "Prepared as a generic structured upload package because a public WASI Intelligence import schema could not be verified.",
+  "fund_identity": {
+    "fund_name": "CIREX Fund",
+    "short_name": "CIREX",
+    "full_name": "Cote d'Ivoire Raw Export Index Fund",
+    "benchmark_name": "Cote d'Ivoire Raw Export Index",
+    "benchmark_ticker": "CIREX",
+    "vehicle_stage": "concept_and_platform_profile",
+    "fund_status": "not_yet_constituted",
+    "target_domicile": "Cote d'Ivoire / WAEMU",
+    "base_currency": "XOF",
+    "nav_currency": "XOF",
+    "base_index_level": 100.0,
+    "base_index_date": "2023-01-01",
+    "asset_class": "commodity_export_economy_reference_fund",
+    "strategy_type": "rules_based_index_tracking",
+    "reference_region": "Cote d'Ivoire"
+  },
+  "fund_family": {
+    "family_code": "WAEX",
+    "family_name": "West Africa Export Index Family",
+    "family_role": "coastal_anchor_member",
+    "shared_base_currency": "XOF",
+    "shared_family_rule": "Each country fund keeps its own raw-export methodology while staying aligned to a common family naming, governance, and upload structure.",
+    "sibling_funds": [
+      "BUREX"
+    ]
+  },
+  "investment_objective": {
+    "primary_objective": "Track the evolution of the main raw materials exported from Cote d'Ivoire through a transparent, rules-based benchmark measured in XOF.",
+    "secondary_objective": "Provide a future foundation for a regulated investment product linked to the country's export economy.",
+    "economic_thesis": [
+      "Cote d'Ivoire's export economy is anchored in a concentrated set of raw materials.",
+      "A long-memory shipment-weighted benchmark can represent the physical export structure of the country.",
+      "XOF denomination makes the benchmark locally relevant for WAEMU users."
+    ]
+  },
+  "benchmark_methodology": {
+    "index_name": "Cote d'Ivoire Raw Export Index",
+    "index_code": "CIREX",
+    "base_currency": "XOF",
+    "calculation_currency": "XOF",
+    "weighting_method": "trailing_20_year_average_export_tonnage_weighting",
+    "weight_definition": "Each constituent weight is the commodity's share of trailing twenty-year average export tonnage.",
+    "reconstitution_frequency": "annual",
+    "rebalancing_frequency": "quarterly",
+    "pricing_method": "reference_commodity_prices_converted_or_expressed_in_XOF",
+    "calculation_logic": "Index level changes according to weighted commodity return movements in XOF.",
+    "coverage_rule": "Include major raw materials exported from Cote d'Ivoire, even where no liquid futures market exists.",
+    "methodology_caution": "Pure tonnage weighting materially reduces the weight of high-value low-mass exports such as gold and diamonds."
+  },
+  "fund_structure": {
+    "proposed_vehicle_type": "separate_regulated_investment_vehicle",
+    "relationship_to_microfinance": "must_be_legally_and_operationally_separate_from_any_SFD_microfinance_entity",
+    "replication_model": "reference_index_first_investable_replication_later",
+    "current_product_form": "reference_fund_profile",
+    "future_product_forms": [
+      "collective_investment_vehicle",
+      "structured_note",
+      "tokenized_fund_shares"
+    ],
+    "share_classes_planned": [
+      {
+        "class_name": "CIREX XOF Core",
+        "currency": "XOF",
+        "hedging": "none"
+      }
+    ],
+    "subscription_redemption_frequency": "TBD",
+    "valuation_frequency": "daily_or_periodic_TBD",
+    "income_treatment": "TBD_accumulating_or_distributing",
+    "liquidity_profile": "TBD_dependent_on_legal_vehicle_and_replication_method"
+  },
+  "constituent_universe": [
+    {
+      "code": "cocoa_beans",
+      "name": "Cocoa Beans",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 33.90
+    },
+    {
+      "code": "natural_rubber",
+      "name": "Natural Rubber",
+      "category": "Industrial Agriculture",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 19.26
+    },
+    {
+      "code": "cashew_nuts",
+      "name": "Cashew Nuts",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 15.10
+    },
+    {
+      "code": "crude_oil",
+      "name": "Crude Oil",
+      "category": "Energy",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 11.71
+    },
+    {
+      "code": "manganese",
+      "name": "Manganese Ore",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 7.86
+    },
+    {
+      "code": "palm_oil",
+      "name": "Palm Oil",
+      "category": "Industrial Agriculture",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 4.47
+    },
+    {
+      "code": "raw_cotton",
+      "name": "Raw Cotton",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 3.70
+    },
+    {
+      "code": "coffee",
+      "name": "Coffee",
+      "category": "Softs",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 2.39
+    },
+    {
+      "code": "nickel",
+      "name": "Nickel Ore",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 1.62
+    },
+    {
+      "code": "gold",
+      "name": "Gold",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": true,
+      "illustrative_weight_pct": 0.00
+    },
+    {
+      "code": "diamonds",
+      "name": "Diamonds",
+      "category": "Metals",
+      "included_in_reference_index": true,
+      "futures_replication_candidate": false,
+      "illustrative_weight_pct": 0.00
+    }
+  ],
+  "illustrative_weight_note": {
+    "status": "prototype_only",
+    "explanation": "Illustrative weights come from the current local prototype dataset and should be replaced with official twenty-year shipment data before institutional launch."
+  },
+  "pricing_and_data": {
+    "shipment_data_needed": [
+      "port_loading_data_by_commodity",
+      "customs_export_records",
+      "official_trade_statistics"
+    ],
+    "price_data_needed": [
+      "recognized_spot_or_reference_prices",
+      "auction_prices_where_relevant",
+      "benchmark_futures_or_proxy_prices_for_investable_constituents"
+    ],
+    "fx_requirement": "XOF_reference_pricing_or_conversion_logic",
+    "data_governance": "index_committee_and_documented_source_hierarchy_required"
+  },
+  "governance": {
+    "index_committee_required": true,
+    "committee_roles": [
+      "constituent_eligibility_review",
+      "pricing_source_review",
+      "methodology_change_control",
+      "exception_management"
+    ],
+    "methodology_change_policy": "documented_and_version_controlled",
+    "independent_oversight_needed": true
+  },
+  "target_users": {
+    "primary_target_investors": [
+      "WAEMU_high_net_worth_investors",
+      "family_offices",
+      "Africa_focused_institutions",
+      "commodity_and_export_theme_allocators"
+    ],
+    "secondary_users": [
+      "research_platforms",
+      "advisory_platforms",
+      "loan_officers_using_export_context",
+      "future_tokenized_investment_interfaces"
+    ]
+  },
+  "risk_factors": [
+    "commodity_price_volatility",
+    "shipment_volume_distortion_under_pure_tonnage_weighting",
+    "data_quality_and_source_consistency_risk",
+    "regulatory_and_product_approval_risk",
+    "illiquidity_for_non_futures_constituents",
+    "operational_risk_in_index_governance",
+    "country_and_export_concentration_risk",
+    "technology_layer_execution_risk"
+  ],
+  "technology_layer": {
+    "tokenization_ready": true,
+    "tokenization_current_status": "design_only",
+    "cbdc_ready": true,
+    "cbdc_current_status": "do_not_assume_live_XOF_CBDC_in_this_profile",
+    "x402_ready": true,
+    "x402_role": "programmable_access_and_payment_layer_not_the_legal_fund_ledger",
+    "recommended_stack": [
+      "regulated_fund_vehicle",
+      "onchain_share_registry_when_permitted",
+      "XOF_accounting_layer",
+      "future_CBDC_or_approved_digital_settlement_layer",
+      "x402_API_access_layer"
+    ]
+  },
+  "microfinance_interface": {
+    "allowed_relationship": "advisory_and_contextual_link_only",
+    "disallowed_assumption": "do_not_treat_the_microfinance_entity_as_the_fund_vehicle",
+    "operational_use_case": [
+      "export_context_for_credit_decisions",
+      "borrower_sector_monitoring",
+      "client_education"
+    ]
+  },
+  "regulatory_positioning": {
+    "microfinance_operations_note": "In WAEMU, SFD microfinance activity covers deposits, loans, and signature guarantees rather than directly serving as an investment fund vehicle.",
+    "collective_investment_note": "A future collective investment product would require the relevant regional capital-markets approval process.",
+    "product_separation_note": "CIREX Fund should be constituted and distributed separately from any SFD balance sheet."
+  },
+  "operating_stage": {
+    "current_live_components": [
+      "offline_ecosystem_hub",
+      "offline_microfinance_operations_app",
+      "prototype_CIREX_market_dashboard"
+    ],
+    "not_yet_live_components": [
+      "regulated_fund_vehicle",
+      "investor_portal",
+      "live_data_pipeline",
+      "tokenized_share_issuance"
+    ]
+  },
+  "required_next_documents": [
+    "full_benchmark_methodology_document",
+    "fund_term_sheet",
+    "legal_structure_memo",
+    "data_source_policy",
+    "index_governance_charter",
+    "risk_disclosure_document",
+    "investor_factsheet"
+  ],
+  "reference_urls": [
+    "https://www.bceao.int/fr/documents/operations-que-les-sfd-sont-autorises-realiser",
+    "https://www.crepmf.org/assets/docs/general/Reglement_General.pdf"
+  ]
+}

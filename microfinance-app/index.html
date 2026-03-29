@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CIREX Microfinance</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Sora:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page-orb orb-a"></div>
+  <div class="page-orb orb-b"></div>
+
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-top">
+        <a class="back-link" href="../index.html">Retour vers WASI DEX</a>
+        <div>
+          <div class="eyebrow">CIREX Finance</div>
+          <h1>CIREX Microfinance</h1>
+          <p>Crédit terrain, supervision d'agence, suivi des remboursements et contrôle réglementaire dans une seule interface claire.</p>
+        </div>
+      </div>
+
+      <div class="nav-shell">
+        <div class="eyebrow">Navigation</div>
+        <nav class="nav-list">
+          <button class="nav-item active" data-view="overview">Vue d'ensemble</button>
+          <button class="nav-item" data-view="clients">Clients</button>
+          <button class="nav-item" data-view="loans">Crédits</button>
+          <button class="nav-item" data-view="repayments">Remboursements</button>
+          <button class="nav-item" data-view="advisor">Conseiller IA</button>
+        </nav>
+      </div>
+
+      <div class="sidebar-stack">
+        <article class="sidebar-card" id="institution-card"></article>
+        <article class="sidebar-card" id="pulse-card"></article>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">Pilotage Microfinance</div>
+          <h2 id="view-title">Vue d'ensemble</h2>
+          <p id="view-description" class="lead-copy">Suivez le portefeuille, la pression des agences, l'exposition des agents de crédit et la qualité des emprunteurs en un coup d'oeil.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="meta-chip">
+            <span class="status-dot"></span>
+            <span>Contrôle conformité actif</span>
+          </div>
+          <div class="meta-chip" id="last-updated">Mise à jour -</div>
+        </div>
+        <div class="topbar-actions">
+          <button id="reset-btn" class="secondary-btn">Réinitialiser la démo</button>
+          <button id="export-btn" class="primary-btn">Exporter les données</button>
+        </div>
+      </header>
+
+      <section class="hero-strip" id="hero-strip"></section>
+
+      <section class="view active" id="view-overview">
+        <div class="feature-grid">
+          <article class="panel accent-panel" id="portfolio-spotlight"></article>
+          <article class="panel" id="collection-spotlight"></article>
+        </div>
+        <div class="stats-grid" id="stats-grid"></div>
+        <div class="two-col">
+          <article class="panel">
+            <div class="eyebrow">Risque Portefeuille</div>
+            <h3>Points d'attention</h3>
+            <div id="risk-list" class="stack"></div>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">Vue Agences</div>
+            <h3>Portefeuille par agence</h3>
+            <div id="branch-table" class="table"></div>
+          </article>
+        </div>
+        <div class="two-col">
+          <article class="panel">
+            <div class="eyebrow">Vue Équipe</div>
+            <h3>Portefeuille par agent</h3>
+            <div id="officer-table" class="table"></div>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">Qualité Client</div>
+            <h3>Score des emprunteurs</h3>
+            <div id="score-table" class="table"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-clients">
+        <div class="split">
+          <article class="panel">
+            <div class="eyebrow">Nouveau Dossier</div>
+            <h3>Ajouter un client</h3>
+            <form id="client-form" class="form-grid">
+              <label>Nom complet<input name="name" required></label>
+              <label>Secteur d'activité<input name="sector" required></label>
+              <label>Localité<input name="region" required></label>
+              <label>Téléphone<input name="phone" required></label>
+              <label>Agence<select name="branchId" id="client-branch-select" required></select></label>
+              <label>Agent de crédit<select name="officerId" id="client-officer-select" required></select></label>
+              <label class="full-span">Notes<textarea name="notes" rows="3"></textarea></label>
+              <div class="full-span actions"><button class="primary-btn" type="submit">Ajouter le client</button></div>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">Portefeuille Client</div>
+            <h3>Clients</h3>
+            <div id="client-list" class="stack"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-loans">
+        <div class="split">
+          <article class="panel">
+            <div class="eyebrow">Mise En Place</div>
+            <h3>Créer un crédit</h3>
+            <div class="compliance-shell">
+              <div class="compliance-card idle" id="loan-compliance-card">
+                <div class="eyebrow">Filtre Juridique IA</div>
+                <div class="compliance-body">
+                  Chaque nouveau crédit est contrôlé avant enregistrement afin de limiter les écarts réglementaires.
+                </div>
+              </div>
+            </div>
+            <form id="loan-form" class="form-grid">
+              <label>Client<select name="clientId" id="loan-client-select" required></select></label>
+              <label>Objet du crédit<input name="purpose" required></label>
+              <label>Montant XOF<input name="principal" type="number" min="1" required></label>
+              <label>Taux d'intérêt %<input name="interestRate" type="number" min="0" step="0.1" required></label>
+              <label>Durée en mois<input name="termMonths" type="number" min="1" required></label>
+              <label>Prochaine échéance<input name="nextDueDate" type="date" required></label>
+              <label>Agence<select name="branchId" id="loan-branch-select" required></select></label>
+              <label>Agent de crédit<select name="officerId" id="loan-officer-select" required></select></label>
+              <label>Niveau de risque<select name="riskFlag"><option value="Low">Faible</option><option value="Medium">Moyen</option><option value="High">Élevé</option></select></label>
+              <label>Statut<select name="status"><option value="Current">En cours</option><option value="Watch">Sous surveillance</option><option value="Late">En retard</option></select></label>
+              <div class="full-span actions"><button id="loan-submit-btn" class="primary-btn" type="submit">Contrôler puis créer le crédit</button></div>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">Portefeuille Crédit</div>
+            <h3>Crédits</h3>
+            <div id="loan-list" class="stack"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-repayments">
+        <div class="split">
+          <article class="panel">
+            <div class="eyebrow">Encaissement</div>
+            <h3>Enregistrer un remboursement</h3>
+            <div class="compliance-shell">
+              <div class="compliance-card idle" id="repayment-compliance-card">
+                <div class="eyebrow">Filtre Juridique IA</div>
+                <div class="compliance-body">
+                  Chaque remboursement est vérifié avant validation pour rester cohérent avec le dossier de crédit et le cadre légal.
+                </div>
+              </div>
+            </div>
+            <form id="repayment-form" class="form-grid">
+              <label>Crédit<select name="loanId" id="repayment-loan-select" required></select></label>
+              <label>Montant XOF<input name="amount" type="number" min="1" required></label>
+              <label>Date de paiement<input name="paymentDate" type="date" required></label>
+              <label>Commentaire<input name="note" required></label>
+              <div class="full-span actions"><button id="repayment-submit-btn" class="primary-btn" type="submit">Contrôler puis enregistrer le remboursement</button></div>
+            </form>
+          </article>
+          <article class="panel">
+            <div class="eyebrow">Journal D'encaissement</div>
+            <h3>Remboursements</h3>
+            <div id="repayment-list" class="stack"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="view" id="view-advisor">
+        <div class="advisor-grid">
+          <article class="panel advisor-panel">
+            <div class="eyebrow">CIREX IA</div>
+            <h3>Conseiller Réglementaire Microfinance</h3>
+            <p class="lead-copy advisor-copy">
+              Posez vos questions sur la réglementation microfinance en Afrique, le périmètre BCEAO et UEMOA,
+              les sources officielles indexées et les priorités opérationnelles du portefeuille CIREX.
+            </p>
+
+            <div class="advisor-meta" id="ai-meta-pills"></div>
+            <div class="advisor-examples" id="ai-example-prompts"></div>
+
+            <div class="advisor-chat" id="ai-chat-log" aria-live="polite">
+              <article class="advisor-message assistant">
+                <div class="eyebrow">Assistant</div>
+                <div class="advisor-message-body">
+                  Posez votre question en français. Essayez par exemple : « La réglementation BCEAO sur la microfinance s'applique-t-elle au Sénégal ? »
+                </div>
+              </article>
+            </div>
+
+            <form id="ai-form" class="advisor-form">
+              <label class="sr-only" for="ai-question">Poser une question à CIREX IA</label>
+              <textarea
+                id="ai-question"
+                name="question"
+                rows="4"
+                placeholder="Posez une question sur la réglementation, un pays, ou le portefeuille CIREX..."
+                required
+              ></textarea>
+              <div class="advisor-form-row">
+                <p class="muted">Les réponses réglementaires sont fondées sur des sources officielles indexées. Les réponses opérationnelles utilisent l'état actuel du portefeuille CIREX.</p>
+                <button id="ai-submit-btn" class="primary-btn" type="submit">Interroger l'IA</button>
+              </div>
+            </form>
+          </article>
+
+          <div class="advisor-side">
+            <article class="panel">
+              <div class="eyebrow">Base Réglementaire</div>
+              <h3 id="ai-source-title">Chargement des sources...</h3>
+              <p id="ai-source-description" class="muted">
+                Chargement de la base juridique microfinance connectée à CIREX.
+              </p>
+              <div class="advisor-form-row advisor-source-row">
+                <p class="muted">La base se met à jour automatiquement chaque jour tant que le serveur CIREX reste actif.</p>
+                <button id="ai-refresh-btn" class="secondary-btn" type="button">Actualiser les sources</button>
+              </div>
+              <div class="signal-list" id="ai-source-links"></div>
+            </article>
+
+            <article class="panel">
+              <div class="eyebrow">Ce Que L'IA Apporte</div>
+              <h3>Un appui en deux couches</h3>
+              <div class="stack">
+                <article class="stack-card">
+                  <strong>Recherche officielle</strong>
+                  <div>Pays couverts, ministères, BCEAO, UMOA, UEMOA et textes réglementaires microfinance déjà indexés.</div>
+                </article>
+                <article class="stack-card">
+                  <strong>Appui opérationnel</strong>
+                  <div>L'IA lit l'état actuel du portefeuille CIREX pour signaler les retards, la pression par agence et les priorités de suivi.</div>
+                </article>
+                <article class="stack-card">
+                  <strong>Verrou de conformité</strong>
+                  <div>La création d'un crédit et l'enregistrement d'un remboursement passent désormais par un contrôle juridique avant validation.</div>
+                </article>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
