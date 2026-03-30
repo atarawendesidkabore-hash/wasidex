@@ -961,21 +961,18 @@ function renderContent() {
   } else if (currentView === "fx") {
     area.innerHTML = renderFX();
     bindFXConverter();
+  } else if (currentView === "transfer") {
+    area.innerHTML = renderTransfer();
+    bindTransfer();
   }
 
   // Card/row click handlers
-} else if (currentView === "transfer") {
-  area.innerHTML = renderTransfer();
-  bindTransfer();
-}
-
-// Card/row click handlers
-area.querySelectorAll("[data-code]").forEach((el) => {
-  el.addEventListener("click", (e) => {
-    if (e.target.closest("a")) return;
-    openDrawer(el.dataset.code);
+  area.querySelectorAll("[data-code]").forEach((el) => {
+    el.addEventListener("click", (e) => {
+      if (e.target.closest("a")) return;
+      openDrawer(el.dataset.code);
+    });
   });
-});
 }
 
 function renderAll() {
