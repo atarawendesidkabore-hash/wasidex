@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#07231d">
+  <title>WASI Transfer Mobile</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./wasi-transfer-app.css">
+</head>
+<body>
+  <div class="grain"></div>
+  <main class="app-shell">
+    <header class="app-header">
+      <a class="back-link" href="./index.html">← WASI DEX</a>
+      <div class="brand-row">
+        <div class="brand-pill">WASI Transfer</div>
+        <div class="live-pill" id="live-status">Live Pricing</div>
+      </div>
+      <h1>Envoyez de l'argent en Afrique</h1>
+      <p class="subtitle">Application mobile de transfert avec barème WASI inférieur à Wave.</p>
+    </header>
+
+    <section class="quote-card">
+      <div class="section-head">
+        <h2>Devis instantané</h2>
+        <span class="muted" id="pricing-tier-label">Palier Starter</span>
+      </div>
+
+      <label class="field-label" for="send-amount">Vous envoyez</label>
+      <div class="send-row">
+        <input id="send-amount" class="amount-input" type="number" min="1" max="50000" step="1" value="200">
+        <select id="send-currency" class="select-input">
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+          <option value="GBP">GBP</option>
+          <option value="CAD">CAD</option>
+        </select>
+      </div>
+
+      <div class="chip-row">
+        <button class="chip" data-amount="50" type="button">50</button>
+        <button class="chip" data-amount="200" type="button">200</button>
+        <button class="chip" data-amount="500" type="button">500</button>
+        <button class="chip" data-amount="1000" type="button">1000</button>
+      </div>
+
+      <label class="field-label" for="receive-currency">Le bénéficiaire reçoit</label>
+      <select id="receive-currency" class="select-input full">
+        <option value="XOF">XOF - UEMOA</option>
+        <option value="XAF">XAF - CEMAC</option>
+        <option value="NGN">NGN - Nigeria</option>
+        <option value="GHS">GHS - Ghana</option>
+        <option value="KES">KES - Kenya</option>
+        <option value="ZAR">ZAR - Afrique du Sud</option>
+      </select>
+
+      <div class="result-panel">
+        <div class="result-label">Montant reçu estimé</div>
+        <div class="result-value" id="receive-amount">-</div>
+        <div class="result-sub" id="corridor-rate">-</div>
+      </div>
+
+      <div class="breakdown" id="breakdown"></div>
+
+      <button id="continue-btn" class="primary-btn" type="button">Continuer le transfert</button>
+    </section>
+
+    <section class="pricing-card">
+      <div class="section-head">
+        <h2>Barème WASI</h2>
+        <span class="muted">Toujours moins cher que Wave</span>
+      </div>
+      <div class="pricing-grid" id="pricing-grid"></div>
+    </section>
+
+    <section class="beneficiaries-card">
+      <div class="section-head">
+        <h2>Bénéficiaires rapides</h2>
+        <a class="mini-link" href="#">Gérer</a>
+      </div>
+      <div class="beneficiary-list">
+        <button class="beneficiary" data-currency="XOF" type="button">
+          <strong>Awa K.</strong><span>Dakar • XOF</span>
+        </button>
+        <button class="beneficiary" data-currency="GHS" type="button">
+          <strong>Kwame A.</strong><span>Accra • GHS</span>
+        </button>
+        <button class="beneficiary" data-currency="KES" type="button">
+          <strong>Njeri M.</strong><span>Nairobi • KES</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <script src="./wasi-transfer-app.js"></script>
+</body>
+</html>
