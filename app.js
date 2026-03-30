@@ -1022,11 +1022,26 @@ initializeFxRates();
 
 // ── TRANSFER — Quote Simulator ──────────────────────────────────────────────
 
-const TRANSFER_FEE_PCT = 0.010;    // 1.0% flat fee on send amount
-const TRANSFER_FX_MARGIN = 0.005;  // 0.5% applied FX spread
+const TRANSFER_PRICING_TIERS = [
+  { minAmount: 0, feePct: 0.012, fxMarginPct: 0.004, label: "Starter" },
+  { minAmount: 200, feePct: 0.010, fxMarginPct: 0.004, label: "Growth" },
+  { minAmount: 1000, feePct: 0.008, fxMarginPct: 0.004, label: "Pro" }
+];
 
 function pctLabel(value) {
   return `${(value * 100).toFixed(2).replace(".", ",")}%`;
+}
+
+function getTransferPricing(sendAmount) {
+  const amount = Number.isFinite(sendAmount) ? sendAmount : 0;
+  let selected = TRANSFER_PRICING_TIERS[0];
+  for (const tier of TRANSFER_PRICING_TIERS) {
+    if (amount >= tier.minAmount) selected = tier;
+  }
+  return {
+    ...selected,
+    totalCostPct: selected.feePct + selected.fxMarginPct
+  };
 }
 
 // Supplemental send currencies not in the African fxRates table
@@ -1057,17 +1072,19 @@ function computeTransferQuote(sendAmount, sendCurrency, receiveCurrency) {
   const receiveEntry = fxRates.find((f) => f.currency === receiveCurrency);
   if (!sendRate || !receiveEntry) return null;
 
+  const pricing = getTransferPricing(sendAmount);
+
   const receiveRate = receiveEntry.rate; // XOF per 1 receiveCurrency
-  const feeAmount = sendAmount * TRANSFER_FEE_PCT;
+  const feeAmount = sendAmount * pricing.feePct;
   const netSend = sendAmount - feeAmount;
-  const xofDelivered = netSend * sendRate * (1 - TRANSFER_FX_MARGIN);
+  const xofDelivered = netSend * sendRate * (1 - pricing.fxMarginPct);
   const receiveAmount = receiveCurrency === "XOF" ? xofDelivered : xofDelivered / receiveRate;
 
   // Direct rate: how many receiveCurrency per 1 sendCurrency
   const midRateDirect = receiveCurrency === "XOF" ? sendRate : sendRate / receiveRate;
-  const appliedRateDirect = midRateDirect * (1 - TRANSFER_FX_MARGIN);
+  const appliedRateDirect = midRateDirect * (1 - pricing.fxMarginPct);
 
-  const effectiveCostPct = (TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN) * 100;
+  const effectiveCostPct = pricing.totalCostPct * 100;
 
   // Competitor estimates — based on gross XOF value before any fee
   const grossXof = sendAmount * sendRate;
@@ -1078,6 +1095,7 @@ function computeTransferQuote(sendAmount, sendCurrency, receiveCurrency) {
 
   return {
     sendAmount, sendCurrency, receiveCurrency,
+    pricing,
     feeAmount, receiveAmount,
     midRateDirect, appliedRateDirect, effectiveCostPct,
     comparison: {
@@ -1098,6 +1116,11 @@ function fmtTransfer(value, currency) {
 function renderTransfer() {
   const sendCurrencies = getTransferSendCurrencies();
   const receiveCurrencies = getTransferReceiveCurrencies();
+  const starterTier = getTransferPricing(50);
+  const growthTier = getTransferPricing(200);
+  const proTier = getTransferPricing(1000);
+  const minTotalPct = Math.min(...TRANSFER_PRICING_TIERS.map((tier) => tier.feePct + tier.fxMarginPct));
+  const maxTotalPct = Math.max(...TRANSFER_PRICING_TIERS.map((tier) => tier.feePct + tier.fxMarginPct));
 
   const sendOptions = sendCurrencies
     .map((f) => `<option value="${f.currency}">${f.currency} — ${f.name}</option>`).join("");
@@ -1126,7 +1149,7 @@ function renderTransfer() {
             <select class="tr-select tr-select-full" id="tr-receive-currency">${receiveOptions}</select>
           </div>
           <div class="tr-rate-note">
-            Frais : <strong>${pctLabel(TRANSFER_FEE_PCT)}</strong> · Marge FX : <strong>${pctLabel(TRANSFER_FX_MARGIN)}</strong> · Coût total : <strong>≈ ${pctLabel(TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN)}</strong>
+            Barème WASI: <strong>0–199</strong> = ${pctLabel(starterTier.totalCostPct)} · <strong>200–999</strong> = ${pctLabel(growthTier.totalCostPct)} · <strong>1000+</strong> = ${pctLabel(proTier.totalCostPct)}
           </div>
         </div>
 
@@ -1155,8 +1178,8 @@ function renderTransfer() {
           </div>
           <div class="tr-market-card best">
             <div class="tr-market-name">WASI Transfer</div>
-            <div class="tr-market-cost">~${pctLabel(TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN)}</div>
-            <div class="tr-market-note">${pctLabel(TRANSFER_FEE_PCT)} frais + ${pctLabel(TRANSFER_FX_MARGIN)} marge FX · Taux AFEX</div>
+            <div class="tr-market-cost">~${pctLabel(minTotalPct)}–${pctLabel(maxTotalPct)}</div>
+            <div class="tr-market-note">Tarif par palier · toujours sous Wave (2%) · Taux AFEX</div>
           </div>
         </div>
         <div class="tr-market-source">Source: World Bank Remittance Prices Q1 2026 · Moyenne Afrique subsaharienne : 7,8% · Zone XOF : ~4–5%</div>
@@ -1207,11 +1230,11 @@ function updateTransferQuote() {
         <span>1 ${q.sendCurrency} = ${rateDisplay(q.midRateDirect)} ${q.receiveCurrency}</span>
       </div>
       <div class="tr-brow deduct">
-        <span>Frais WASI (${pctLabel(TRANSFER_FEE_PCT)})</span>
+        <span>Frais WASI (${pctLabel(q.pricing.feePct)}) · Palier ${q.pricing.label}</span>
         <span>− ${feeDisplay} ${q.sendCurrency}</span>
       </div>
       <div class="tr-brow deduct">
-        <span>Marge FX (${pctLabel(TRANSFER_FX_MARGIN)})</span>
+        <span>Marge FX (${pctLabel(q.pricing.fxMarginPct)})</span>
         <span>Taux appliqué : 1 ${q.sendCurrency} = ${rateDisplay(q.appliedRateDirect)} ${q.receiveCurrency}</span>
       </div>
       <div class="tr-brow total">
