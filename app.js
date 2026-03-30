@@ -100,8 +100,8 @@ const instruments = [
 // Rates expressed as: 1 unit of currency = X XOF
 const FX_RATES_FALLBACK = [
   // ── Base & Anchor ──────────────────────────────────────────────────────────
-  { currency: "XOF", name: "CFA Franc UEMOA", countries: ["Benin","Burkina Faso","Côte d'Ivoire","Guinea-Bissau","Mali","Niger","Senegal","Togo"], region: "WAEX", rate: 1.0000, status: "base", note: "Base currency (BCEAO peg to EUR)" },
-  { currency: "XAF", name: "CFA Franc BEAC", countries: ["Cameroon","CAR","Chad","Congo","Equatorial Guinea","Gabon"], region: "CAEX", rate: 1.0000, status: "pegged", note: "At parity with XOF (both pegged to EUR at 655.957)" },
+  { currency: "XOF", name: "CFA Franc UEMOA", countries: ["Benin", "Burkina Faso", "Côte d'Ivoire", "Guinea-Bissau", "Mali", "Niger", "Senegal", "Togo"], region: "WAEX", rate: 1.0000, status: "base", note: "Base currency (BCEAO peg to EUR)" },
+  { currency: "XAF", name: "CFA Franc BEAC", countries: ["Cameroon", "CAR", "Chad", "Congo", "Equatorial Guinea", "Gabon"], region: "CAEX", rate: 1.0000, status: "pegged", note: "At parity with XOF (both pegged to EUR at 655.957)" },
   { currency: "EUR", name: "Euro (référence)", countries: ["Zone Euro"], region: "REF", rate: 655.957, status: "anchor", note: "Anchor currency — XOF/XAF peg fixed" },
   { currency: "USD", name: "US Dollar (référence)", countries: ["—"], region: "REF", rate: 615.00, status: "ref", note: "Indicative — marché mid-rate" },
 
@@ -707,15 +707,15 @@ function closeDrawer() {
 
 // FX view
 const FX_STATUS_COLORS = {
-  base:       { color: "#22c55e", label: "Base" },
-  anchor:     { color: "#f59e0b", label: "Ancre EUR" },
-  pegged:     { color: "#3b82f6", label: "Ancré" },
+  base: { color: "#22c55e", label: "Base" },
+  anchor: { color: "#f59e0b", label: "Ancre EUR" },
+  pegged: { color: "#3b82f6", label: "Ancré" },
   "semi-pegged": { color: "#60a5fa", label: "Semi-ancré" },
-  fixed:      { color: "#a78bfa", label: "Fixe" },
-  managed:    { color: "#94a3b8", label: "Géré" },
-  flottant:   { color: "#e2e8f0", label: "Flottant" },
-  volatile:   { color: "#ef4444", label: "Volatile" },
-  ref:        { color: "#f59e0b", label: "Référence" }
+  fixed: { color: "#a78bfa", label: "Fixe" },
+  managed: { color: "#94a3b8", label: "Géré" },
+  flottant: { color: "#e2e8f0", label: "Flottant" },
+  volatile: { color: "#ef4444", label: "Volatile" },
+  ref: { color: "#f59e0b", label: "Référence" }
 };
 
 function renderFXLegacy() {
@@ -778,13 +778,13 @@ function renderFXLegacy() {
           </thead>
           <tbody>
             ${rows.map((fx) => {
-              const sc = FX_STATUS_COLORS[fx.status] || { color: "#94a3b8", label: fx.status };
-              const inv = fx.rate > 0 ? (1 / fx.rate) : 0;
-              const invStr = inv >= 1000 ? inv.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) :
-                             inv >= 1 ? inv.toFixed(4) : inv.toFixed(6);
-              const rateStr = fx.rate >= 1000 ? fx.rate.toLocaleString("fr-FR", { maximumFractionDigits: 3 }) :
-                              fx.rate >= 1 ? fx.rate.toFixed(4) : fx.rate.toFixed(6);
-              return `
+      const sc = FX_STATUS_COLORS[fx.status] || { color: "#94a3b8", label: fx.status };
+      const inv = fx.rate > 0 ? (1 / fx.rate) : 0;
+      const invStr = inv >= 1000 ? inv.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) :
+        inv >= 1 ? inv.toFixed(4) : inv.toFixed(6);
+      const rateStr = fx.rate >= 1000 ? fx.rate.toLocaleString("fr-FR", { maximumFractionDigits: 3 }) :
+        fx.rate >= 1 ? fx.rate.toFixed(4) : fx.rate.toFixed(6);
+      return `
                 <tr class="fx-row${fx.currency === "XOF" ? " fx-base-row" : ""}">
                   <td><span class="fx-code">${fx.currency}</span></td>
                   <td class="fx-name">${fx.name}</td>
@@ -795,7 +795,7 @@ function renderFXLegacy() {
                   <td class="fx-note-cell">${fx.note}</td>
                 </tr>
               `;
-            }).join("")}
+    }).join("")}
           </tbody>
         </table>
       </div>
@@ -892,13 +892,13 @@ function renderFX() {
           </thead>
           <tbody>
             ${rows.map((fx) => {
-              const sc = FX_STATUS_COLORS[fx.status] || { color: "#94a3b8", label: fx.status };
-              const inv = fx.rate > 0 ? (1 / fx.rate) : 0;
-              const invStr = inv >= 1000 ? inv.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) :
-                             inv >= 1 ? inv.toFixed(4) : inv.toFixed(6);
-              const rateStr = fx.rate >= 1000 ? fx.rate.toLocaleString("fr-FR", { maximumFractionDigits: 3 }) :
-                              fx.rate >= 1 ? fx.rate.toFixed(4) : fx.rate.toFixed(6);
-              return `
+      const sc = FX_STATUS_COLORS[fx.status] || { color: "#94a3b8", label: fx.status };
+      const inv = fx.rate > 0 ? (1 / fx.rate) : 0;
+      const invStr = inv >= 1000 ? inv.toLocaleString("fr-FR", { maximumFractionDigits: 2 }) :
+        inv >= 1 ? inv.toFixed(4) : inv.toFixed(6);
+      const rateStr = fx.rate >= 1000 ? fx.rate.toLocaleString("fr-FR", { maximumFractionDigits: 3 }) :
+        fx.rate >= 1 ? fx.rate.toFixed(4) : fx.rate.toFixed(6);
+      return `
                 <tr class="fx-row${fx.currency === "XOF" ? " fx-base-row" : ""}">
                   <td><span class="fx-code">${fx.currency}</span></td>
                   <td class="fx-name">${fx.name}</td>
@@ -909,7 +909,7 @@ function renderFX() {
                   <td class="fx-note-cell">${fx.note}</td>
                 </tr>
               `;
-            }).join("")}
+    }).join("")}
           </tbody>
         </table>
       </div>
@@ -964,12 +964,18 @@ function renderContent() {
   }
 
   // Card/row click handlers
-  area.querySelectorAll("[data-code]").forEach((el) => {
-    el.addEventListener("click", (e) => {
-      if (e.target.closest("a")) return;
-      openDrawer(el.dataset.code);
-    });
+} else if (currentView === "transfer") {
+  area.innerHTML = renderTransfer();
+  bindTransfer();
+}
+
+// Card/row click handlers
+area.querySelectorAll("[data-code]").forEach((el) => {
+  el.addEventListener("click", (e) => {
+    if (e.target.closest("a")) return;
+    openDrawer(el.dataset.code);
   });
+});
 }
 
 function renderAll() {
@@ -1013,3 +1019,232 @@ function formatRole(role) {
 // Initial render
 renderAll();
 initializeFxRates();
+
+// ── TRANSFER — Quote Simulator ──────────────────────────────────────────────
+
+const TRANSFER_FEE_PCT = 0.015;    // 1.5% flat fee on send amount
+const TRANSFER_FX_MARGIN = 0.0075; // 0.75% applied FX spread
+
+// Supplemental send currencies not in the African fxRates table
+const TRANSFER_SEND_EXTRAS = [
+  { currency: "GBP", name: "British Pound", region: "REF", rate: 782.0, status: "ref", countries: ["United Kingdom"], note: "Indicatif" },
+  { currency: "CAD", name: "Canadian Dollar", region: "REF", rate: 455.0, status: "ref", countries: ["Canada"], note: "Indicatif" }
+];
+
+function getTransferSendCurrencies() {
+  const base = ["EUR", "USD"].map((code) => fxRates.find((f) => f.currency === code)).filter(Boolean);
+  return [...base, ...TRANSFER_SEND_EXTRAS];
+}
+
+function getTransferSendXofRate(currency) {
+  const live = fxRates.find((f) => f.currency === currency);
+  if (live) return live.rate;
+  const extra = TRANSFER_SEND_EXTRAS.find((f) => f.currency === currency);
+  return extra ? extra.rate : null;
+}
+
+function getTransferReceiveCurrencies() {
+  const sendCodes = new Set(["EUR", "USD", "GBP", "CAD"]);
+  return fxRates.filter((f) => !sendCodes.has(f.currency) && f.region !== "REF");
+}
+
+function computeTransferQuote(sendAmount, sendCurrency, receiveCurrency) {
+  const sendRate = getTransferSendXofRate(sendCurrency);
+  const receiveEntry = fxRates.find((f) => f.currency === receiveCurrency);
+  if (!sendRate || !receiveEntry) return null;
+
+  const receiveRate = receiveEntry.rate; // XOF per 1 receiveCurrency
+  const feeAmount = sendAmount * TRANSFER_FEE_PCT;
+  const netSend = sendAmount - feeAmount;
+  const xofDelivered = netSend * sendRate * (1 - TRANSFER_FX_MARGIN);
+  const receiveAmount = receiveCurrency === "XOF" ? xofDelivered : xofDelivered / receiveRate;
+
+  // Direct rate: how many receiveCurrency per 1 sendCurrency
+  const midRateDirect = receiveCurrency === "XOF" ? sendRate : sendRate / receiveRate;
+  const appliedRateDirect = midRateDirect * (1 - TRANSFER_FX_MARGIN);
+
+  const effectiveCostPct = (TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN) * 100;
+
+  // Competitor estimates — based on gross XOF value before any fee
+  const grossXof = sendAmount * sendRate;
+  const grossReceive = receiveCurrency === "XOF" ? grossXof : grossXof / receiveRate;
+  const wuReceive = grossReceive * (1 - 0.08);
+  const mgReceive = grossReceive * (1 - 0.06);
+  const waveReceive = grossReceive * (1 - 0.02);
+
+  return {
+    sendAmount, sendCurrency, receiveCurrency,
+    feeAmount, receiveAmount,
+    midRateDirect, appliedRateDirect, effectiveCostPct,
+    comparison: {
+      westernUnion: { amount: wuReceive, costPct: 8 },
+      moneyGram: { amount: mgReceive, costPct: 6 },
+      wave: { amount: waveReceive, costPct: 2 }
+    }
+  };
+}
+
+function fmtTransfer(value, currency) {
+  if (currency === "XOF" || currency === "XAF") {
+    return Math.round(value).toLocaleString("fr-FR");
+  }
+  return value.toLocaleString("fr-FR", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function renderTransfer() {
+  const sendCurrencies = getTransferSendCurrencies();
+  const receiveCurrencies = getTransferReceiveCurrencies();
+
+  const sendOptions = sendCurrencies
+    .map((f) => `<option value="${f.currency}">${f.currency} — ${f.name}</option>`).join("");
+  const receiveOptions = receiveCurrencies
+    .map((f) => `<option value="${f.currency}"${f.currency === "XOF" ? " selected" : ""}>${f.currency} — ${f.name} · ${(Array.isArray(f.countries) ? f.countries : []).join(", ")}</option>`).join("");
+
+  return `
+    <div class="tr-wrapper">
+      <div class="tr-header">
+        <div class="tr-title">WASI Transfer <span class="tr-beta">BETA</span></div>
+        <div class="tr-subtitle">Simulateur de virement diaspora → Afrique · Taux AFEX de référence</div>
+      </div>
+
+      <div class="tr-layout">
+        <div class="tr-form-panel">
+          <div class="tr-field">
+            <label class="tr-label">Vous envoyez</label>
+            <div class="tr-input-row">
+              <input type="number" class="tr-input" id="tr-amount" value="200" min="1" max="50000" step="1">
+              <select class="tr-select" id="tr-send-currency">${sendOptions}</select>
+            </div>
+          </div>
+          <div class="tr-arrow">↓</div>
+          <div class="tr-field">
+            <label class="tr-label">Destination (devise reçue)</label>
+            <select class="tr-select tr-select-full" id="tr-receive-currency">${receiveOptions}</select>
+          </div>
+          <div class="tr-rate-note">
+            Frais : <strong>1,5%</strong> · Marge FX : <strong>0,75%</strong> · Coût total : <strong>≈ 2,25%</strong>
+          </div>
+        </div>
+
+        <div class="tr-quote-panel" id="tr-quote">
+          <div class="tr-quote-placeholder">Entrez un montant pour voir le devis.</div>
+        </div>
+      </div>
+
+      <div class="tr-market-section">
+        <div class="tr-section-title">Contexte marché — Corridors diaspora → Afrique</div>
+        <div class="tr-market-grid">
+          <div class="tr-market-card high">
+            <div class="tr-market-name">Western Union</div>
+            <div class="tr-market-cost">~6–8%</div>
+            <div class="tr-market-note">Frais fixes + marge FX élevée</div>
+          </div>
+          <div class="tr-market-card mid">
+            <div class="tr-market-name">MoneyGram</div>
+            <div class="tr-market-cost">~5–7%</div>
+            <div class="tr-market-note">Réseau physique Afrique</div>
+          </div>
+          <div class="tr-market-card low">
+            <div class="tr-market-name">Sendwave / Wave</div>
+            <div class="tr-market-cost">~1,5–2%</div>
+            <div class="tr-market-note">Mobile-first, zone XOF</div>
+          </div>
+          <div class="tr-market-card best">
+            <div class="tr-market-name">WASI Transfer</div>
+            <div class="tr-market-cost">~2,25%</div>
+            <div class="tr-market-note">1,5% frais + 0,75% marge FX · Taux AFEX</div>
+          </div>
+        </div>
+        <div class="tr-market-source">Source: World Bank Remittance Prices Q1 2026 · Moyenne Afrique subsaharienne : 7,8% · Zone XOF : ~4–5%</div>
+      </div>
+
+      <div class="tr-disclaimer">
+        ⚠ Simulateur indicatif uniquement. Les taux sont basés sur les données de référence AFEX/WASI et ne constituent pas une offre de service financier.
+        Toute activité de transfert de fonds est soumise à des obligations réglementaires (licence, KYC, AML).
+        Source FX : ${fxSync.source === "live" ? "Frankfurter live" : fxSync.source === "cache" ? "Cache local" : "Référence intégrée"}.
+      </div>
+    </div>
+  `;
+}
+
+function updateTransferQuote() {
+  const amountEl = document.getElementById("tr-amount");
+  const sendEl = document.getElementById("tr-send-currency");
+  const receiveEl = document.getElementById("tr-receive-currency");
+  const quoteEl = document.getElementById("tr-quote");
+  if (!amountEl || !sendEl || !receiveEl || !quoteEl) return;
+
+  const amount = parseFloat(amountEl.value) || 0;
+  const sendCurrency = sendEl.value;
+  const receiveCurrency = receiveEl.value;
+
+  if (amount <= 0) {
+    quoteEl.innerHTML = `<div class="tr-quote-placeholder">Entrez un montant pour voir le devis.</div>`;
+    return;
+  }
+
+  const q = computeTransferQuote(amount, sendCurrency, receiveCurrency);
+  if (!q) {
+    quoteEl.innerHTML = `<div class="tr-quote-placeholder">Taux indisponibles pour ce corridor.</div>`;
+    return;
+  }
+
+  const rateDisplay = (v) => v >= 1 ? v.toFixed(4) : v.toFixed(6);
+  const feeDisplay = q.feeAmount >= 1 ? q.feeAmount.toFixed(2) : q.feeAmount.toFixed(4);
+
+  quoteEl.innerHTML = `
+    <div class="tr-quote-main">
+      <div class="tr-quote-label">Montant reçu (estimé)</div>
+      <div class="tr-quote-value">${fmtTransfer(q.receiveAmount, q.receiveCurrency)} ${q.receiveCurrency}</div>
+    </div>
+    <div class="tr-breakdown">
+      <div class="tr-brow">
+        <span>Taux mid-marché</span>
+        <span>1 ${q.sendCurrency} = ${rateDisplay(q.midRateDirect)} ${q.receiveCurrency}</span>
+      </div>
+      <div class="tr-brow deduct">
+        <span>Frais WASI (1,5%)</span>
+        <span>− ${feeDisplay} ${q.sendCurrency}</span>
+      </div>
+      <div class="tr-brow deduct">
+        <span>Marge FX (0,75%)</span>
+        <span>Taux appliqué : 1 ${q.sendCurrency} = ${rateDisplay(q.appliedRateDirect)} ${q.receiveCurrency}</span>
+      </div>
+      <div class="tr-brow total">
+        <span>Coût total effectif</span>
+        <span>${q.effectiveCostPct.toFixed(2)}%</span>
+      </div>
+    </div>
+    <div class="tr-comparison">
+      <div class="tr-comp-title">Comparaison estimée pour ${fmtTransfer(q.sendAmount, q.sendCurrency)} ${q.sendCurrency}</div>
+      <div class="tr-comp-row other">
+        <span class="tr-comp-name">Western Union</span>
+        <span class="tr-comp-amount">≈ ${fmtTransfer(q.comparison.westernUnion.amount, q.receiveCurrency)} ${q.receiveCurrency}</span>
+        <span class="tr-cost-badge high">${q.comparison.westernUnion.costPct}%</span>
+      </div>
+      <div class="tr-comp-row other">
+        <span class="tr-comp-name">MoneyGram</span>
+        <span class="tr-comp-amount">≈ ${fmtTransfer(q.comparison.moneyGram.amount, q.receiveCurrency)} ${q.receiveCurrency}</span>
+        <span class="tr-cost-badge mid">${q.comparison.moneyGram.costPct}%</span>
+      </div>
+      <div class="tr-comp-row other">
+        <span class="tr-comp-name">Wave / Sendwave</span>
+        <span class="tr-comp-amount">≈ ${fmtTransfer(q.comparison.wave.amount, q.receiveCurrency)} ${q.receiveCurrency}</span>
+        <span class="tr-cost-badge low">${q.comparison.wave.costPct}%</span>
+      </div>
+      <div class="tr-comp-row wasi">
+        <span class="tr-comp-name">WASI Transfer</span>
+        <span class="tr-comp-amount">${fmtTransfer(q.receiveAmount, q.receiveCurrency)} ${q.receiveCurrency}</span>
+        <span class="tr-cost-badge best">${q.effectiveCostPct.toFixed(2)}%</span>
+      </div>
+    </div>
+  `;
+}
+
+function bindTransfer() {
+  ["tr-amount", "tr-send-currency", "tr-receive-currency"].forEach((id) => {
+    const el = document.getElementById(id);
+    if (el) { el.addEventListener("input", updateTransferQuote); el.addEventListener("change", updateTransferQuote); }
+  });
+  updateTransferQuote();
+}
