@@ -1,8 +1,8 @@
 const CIREX_KEYS = ["cirex_microfinance_state_v3", "cirex_microfinance_state_v2"];
 const PORTAL_KEY = "wasi_customer_portal_state_v1";
-const STEPS = ["Candidature", "Analyse WASI (48h)", "Compartiment", "Structuration", "Book Building (15j)", "Admission (30j)", "Cotation", "Suivi"];
+const STEPS = ["Candidature", "Analyse WASI (48 h)", "Compartiment", "Structuration", "Constitution du livre (15 j)", "Admission (30 j)", "Cotation", "Suivi"];
 const QUESTIONS = [
-  "Puis-je acheter CIREX Private Stock aujourd'hui ?",
+  "Puis-je acheter l'action privée CIREX aujourd'hui ?",
   "Quel ticket minimum faut-il prévoir ?",
   "Quel fonds WASI est le plus simple pour commencer ?",
   "Quelle allocation convient à mon profil ?"
@@ -14,19 +14,19 @@ const DEMO = {
     { id: "CL-1003", name: "Kouadio N'Dri", sector: "Logistique locale", region: "Abidjan", phone: "+225 0709090909" }
   ],
   loans: [
-    { clientId: "CL-1001", outstanding: 640000, principal: 850000, status: "Current", riskFlag: "Low" },
-    { clientId: "CL-1002", outstanding: 410000, principal: 650000, status: "Late", riskFlag: "High" },
-    { clientId: "CL-1003", outstanding: 525000, principal: 900000, status: "Watch", riskFlag: "Medium" }
+    { clientId: "CL-1001", outstanding: 640000, principal: 850000, status: "En cours", riskFlag: "Low" },
+    { clientId: "CL-1002", outstanding: 410000, principal: 650000, status: "En retard", riskFlag: "High" },
+    { clientId: "CL-1003", outstanding: 525000, principal: 900000, status: "Sous surveillance", riskFlag: "Medium" }
   ]
 };
 const ASSETS = [
-  { id: "CIREX-PS", group: "private", name: "CIREX Private Stock", issuer: "CIREX Microfinance", type: "Action privée", stage: "Cotation privée", price: 12500, minimumTicket: 50000, description: "Titre privé réservé aux clients CIREX pour financer l'expansion, le digital et l'infrastructure de marché.", note: "Participation client au capital privé CIREX", themes: ["finance", "microfinance", "commerce", "services"] },
-  { id: "AGRLINK", group: "private", name: "AgroLink Croissance", issuer: "AgroLink CI", type: "Action participante", stage: "Book Building", price: 3200, minimumTicket: 25000, description: "Entreprise participante de transformation et logistique agro dans les bassins de production.", note: "Agro-industrie et transformation locale", themes: ["agro", "agriculture", "anacarde", "cacao", "transformation"] },
+  { id: "CIREX-PS", group: "private", name: "Action Privée CIREX", issuer: "CIREX Microfinance", type: "Action privée", stage: "Cotation privée", price: 12500, minimumTicket: 50000, description: "Titre privé réservé aux clients CIREX pour financer l'expansion, le digital et l'infrastructure de marché.", note: "Participation client au capital privé CIREX", themes: ["finance", "microfinance", "commerce", "services"] },
+  { id: "AGRLINK", group: "private", name: "AgroLink Croissance", issuer: "AgroLink CI", type: "Action participante", stage: "Constitution du livre", price: 3200, minimumTicket: 25000, description: "Entreprise participante de transformation et logistique agro dans les bassins de production.", note: "Agro-industrie et transformation locale", themes: ["agro", "agriculture", "anacarde", "cacao", "transformation"] },
   { id: "SOLBRIDGE", group: "private", name: "SolarBridge PME", issuer: "SolarBridge West Africa", type: "Action participante", stage: "Admission", price: 4750, minimumTicket: 30000, description: "Valeur privée orientée énergie productive, mini-réseaux et équipement pour PME.", note: "Énergie distribuée et équipements solaires", themes: ["energie", "services", "solaire"] },
   { id: "KORALOG", group: "private", name: "Kora Logistics Hub", issuer: "Kora Logistics", type: "Action participante", stage: "Pré-admission", price: 5400, minimumTicket: 40000, description: "Société participante sur la distribution urbaine, les entrepôts mutualisés et les corridors régionaux.", note: "Chaînes logistiques et distribution urbaine", themes: ["logistique", "transport", "commerce"] },
-  { id: "WASI-INDEX", group: "fund", name: "WASI Index Fund Core", issuer: "WASI Asset Desk", type: "Fonds indiciel", stage: "Ouvert", price: 10000, minimumTicket: 30000, description: "Exposition diversifiée aux signatures africaines les plus résilientes.", note: "Panier multi-pays orienté leaders africains", themes: ["index", "diversifie", "services", "commerce"] },
-  { id: "WASI-UEMOA", group: "fund", name: "WASI UEMOA Leaders", issuer: "WASI Asset Desk", type: "Fonds thématique", stage: "Ouvert", price: 8500, minimumTicket: 25000, description: "Panier UEMOA concentré sur la consommation, la logistique et les services.", note: "Entreprises UEMOA et croissance domestique", themes: ["uemoa", "commerce", "logistique", "services"] },
-  { id: "WASI-GROWTH", group: "fund", name: "WASI PME Growth Basket", issuer: "WASI Asset Desk", type: "Panier privé", stage: "Ouvert", price: 12000, minimumTicket: 40000, description: "Panier des sociétés participantes à plus forte dynamique de croissance.", note: "PME participantes et marché privé de croissance", themes: ["pme", "croissance", "innovation", "agro"] },
+  { id: "WASI-INDEX", group: "fund", name: "Fonds Indiciel WASI Horizon", issuer: "WASI Asset Desk", type: "Fonds indiciel", stage: "Ouvert", price: 10000, minimumTicket: 30000, description: "Exposition diversifiée aux signatures africaines les plus résilientes.", note: "Panier multi-pays orienté leaders africains", themes: ["index", "diversifie", "services", "commerce"] },
+  { id: "WASI-UEMOA", group: "fund", name: "Champions UEMOA WASI", issuer: "WASI Asset Desk", type: "Fonds thématique", stage: "Ouvert", price: 8500, minimumTicket: 25000, description: "Panier UEMOA concentré sur la consommation, la logistique et les services.", note: "Entreprises UEMOA et croissance domestique", themes: ["uemoa", "commerce", "logistique", "services"] },
+  { id: "WASI-GROWTH", group: "fund", name: "Panier Croissance PME WASI", issuer: "WASI Asset Desk", type: "Panier privé", stage: "Ouvert", price: 12000, minimumTicket: 40000, description: "Panier des sociétés participantes à plus forte dynamique de croissance.", note: "PME participantes et marché privé de croissance", themes: ["pme", "croissance", "innovation", "agro"] },
   { id: "WASI-NOTE", group: "alt", name: "Note privée rendement commerce", issuer: "WASI Credit Desk", type: "Placement alternatif", stage: "Ouvert", price: 15000, minimumTicket: 45000, description: "Produit alternatif conçu autour de flux commerciaux documentés.", note: "Flux adossés au commerce local", themes: ["commerce", "distribution", "services"] },
   { id: "WASI-GOLD", group: "alt", name: "Panier or & matières stratégiques", issuer: "WASI Commodity Desk", type: "Placement alternatif", stage: "Ouvert", price: 18000, minimumTicket: 54000, description: "Panier alternatif pour compléter l'exposition actions privées et fonds indiciels.", note: "Diversification matières premières", themes: ["or", "matiere", "defensif"] }
 ];
@@ -132,7 +132,7 @@ function deriveCustomers(state) {
     if (!loans.length) return null;
     const outstanding = loans.reduce((sum, loan) => sum + Number(loan.outstanding || 0), 0);
     const risk = loans.some((loan) => loan.riskFlag === "High") ? "Élevé" : loans.some((loan) => loan.riskFlag === "Medium") ? "Moyen" : "Faible";
-    const score = clamp(78 - loans.filter((loan) => loan.riskFlag === "High").length * 18 - loans.filter((loan) => loan.status === "Late").length * 10 + loans.length * 4, 34, 88);
+    const score = clamp(78 - loans.filter((loan) => loan.riskFlag === "High").length * 18 - loans.filter((loan) => loan.status === "En retard").length * 10 + loans.length * 4, 34, 88);
     return {
       id: client.id,
       name: client.name || "Client CIREX",
@@ -361,7 +361,7 @@ function renderWallet() {
 function renderAdvice() {
   els.adviceSummary.innerHTML = [
     detailCard("Profil investisseur", `${customer.tier} · score ${customer.score}/100`, "Le niveau d'accès marché dépend de la qualité de la relation de crédit et du risque observé."),
-    detailCard("Instrument conseillé", recommended()[0]?.name || "CIREX Private Stock", answer("Quelle allocation convient à mon profil ?")),
+    detailCard("Instrument conseillé", recommended()[0]?.name || "Action Privée CIREX", answer("Quelle allocation convient à mon profil ?")),
     detailCard("Passerelle complète", "WASI Intelligence disponible", "Le portail complet permet d'aller plus loin si vous souhaitez une vue plus large du marché.")
   ].join("");
 
@@ -411,7 +411,7 @@ function answer(question) {
   const cirexStock = assetById("CIREX-PS");
   const topFund = assetById("WASI-INDEX");
   const best = recommended()[0] || cirexStock;
-  if (msg.includes("cirex") || msg.includes("private stock")) {
+  if (msg.includes("cirex") || msg.includes("private stock") || msg.includes("action privee")) {
     return `Oui. ${cirexStock.name} est accessible à partir de ${money(cirexStock.minimumTicket)} avec un prix indicatif de ${money(cirexStock.price)} par unité.`;
   }
   if (msg.includes("ticket") || msg.includes("minimum")) {
