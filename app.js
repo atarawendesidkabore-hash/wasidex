@@ -1022,8 +1022,12 @@ initializeFxRates();
 
 // ── TRANSFER — Quote Simulator ──────────────────────────────────────────────
 
-const TRANSFER_FEE_PCT = 0.015;    // 1.5% flat fee on send amount
-const TRANSFER_FX_MARGIN = 0.0075; // 0.75% applied FX spread
+const TRANSFER_FEE_PCT = 0.010;    // 1.0% flat fee on send amount
+const TRANSFER_FX_MARGIN = 0.005;  // 0.5% applied FX spread
+
+function pctLabel(value) {
+  return `${(value * 100).toFixed(2).replace(".", ",")}%`;
+}
 
 // Supplemental send currencies not in the African fxRates table
 const TRANSFER_SEND_EXTRAS = [
@@ -1122,7 +1126,7 @@ function renderTransfer() {
             <select class="tr-select tr-select-full" id="tr-receive-currency">${receiveOptions}</select>
           </div>
           <div class="tr-rate-note">
-            Frais : <strong>1,5%</strong> · Marge FX : <strong>0,75%</strong> · Coût total : <strong>≈ 2,25%</strong>
+            Frais : <strong>${pctLabel(TRANSFER_FEE_PCT)}</strong> · Marge FX : <strong>${pctLabel(TRANSFER_FX_MARGIN)}</strong> · Coût total : <strong>≈ ${pctLabel(TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN)}</strong>
           </div>
         </div>
 
@@ -1151,8 +1155,8 @@ function renderTransfer() {
           </div>
           <div class="tr-market-card best">
             <div class="tr-market-name">WASI Transfer</div>
-            <div class="tr-market-cost">~2,25%</div>
-            <div class="tr-market-note">1,5% frais + 0,75% marge FX · Taux AFEX</div>
+            <div class="tr-market-cost">~${pctLabel(TRANSFER_FEE_PCT + TRANSFER_FX_MARGIN)}</div>
+            <div class="tr-market-note">${pctLabel(TRANSFER_FEE_PCT)} frais + ${pctLabel(TRANSFER_FX_MARGIN)} marge FX · Taux AFEX</div>
           </div>
         </div>
         <div class="tr-market-source">Source: World Bank Remittance Prices Q1 2026 · Moyenne Afrique subsaharienne : 7,8% · Zone XOF : ~4–5%</div>
@@ -1203,11 +1207,11 @@ function updateTransferQuote() {
         <span>1 ${q.sendCurrency} = ${rateDisplay(q.midRateDirect)} ${q.receiveCurrency}</span>
       </div>
       <div class="tr-brow deduct">
-        <span>Frais WASI (1,5%)</span>
+        <span>Frais WASI (${pctLabel(TRANSFER_FEE_PCT)})</span>
         <span>− ${feeDisplay} ${q.sendCurrency}</span>
       </div>
       <div class="tr-brow deduct">
-        <span>Marge FX (0,75%)</span>
+        <span>Marge FX (${pctLabel(TRANSFER_FX_MARGIN)})</span>
         <span>Taux appliqué : 1 ${q.sendCurrency} = ${rateDisplay(q.appliedRateDirect)} ${q.receiveCurrency}</span>
       </div>
       <div class="tr-brow total">
